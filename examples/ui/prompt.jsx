@@ -1,4 +1,4 @@
-#targetengine basiljsABC
+#targetengine 'basiljs'
 
 #includepath '~/Documents/;%USERPROFILE%Documents';
 #include 'basiljs/bundle/basil.js';

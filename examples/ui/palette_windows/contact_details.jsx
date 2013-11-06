@@ -1,10 +1,11 @@
 /**
  *
+ * Contact Details
  * Prompt Interface Window Example
  *
  */
 
-#targetengine basiljs
+#targetengine 'basiljs'
 
 
 
@@ -62,8 +63,12 @@ function setup() {
   output[2] = b.text( dialog.email,     b.width/2-150, 260, 300, 80);
 };
 
+
+
 function draw() {
 };
+
+
 
 function update() {
   // live update from our prompt

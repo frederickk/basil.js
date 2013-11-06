@@ -2,12 +2,12 @@
  *
  * Whole Ball of Wax
  * Example of all (current) possible interface controllers
- * 
+ *
  */
 
 // Basil.js target engine is initiate this keeps global variables
 // active as long as the InDesign is running
-#targetengine basiljs
+#targetengine 'basiljs'
 
 
 
@@ -31,8 +31,8 @@ var output = [];
 // This Array is fed into the Interface constructor
 // and determines what controllers are shown, using a
 // limited list of attributes.
-// 
-// the name i.e. myLabel: is used to access the 
+//
+// the name i.e. myLabel: is used to access the
 // controller's output value
 var uiConfig = {
   // buttons

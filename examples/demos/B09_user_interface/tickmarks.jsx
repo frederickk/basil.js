@@ -1,10 +1,24 @@
+/**
+ *
+ * Tickmarks
+ *
+ */
 
-#targetengine 'bbbbasiljs';
+#targetengine 'basiljs'
+
+
+
+//
+//  Includes
+//
 #includepath '~/Documents/;%USERPROFILE%Documents';
 #include 'basiljs/bundle/basil.js';
-#include 'basiljs/bundle/lib/control/control.jsx';
 
 
+
+//
+// Properties
+//
 var h = 1;
 var n = 60;
 
@@ -13,13 +27,14 @@ var length = 15;
 var rot = 0;
 
 
+
 function setup() {
 
   myDlg = control.palette('Tickmarks');
   // myDlg.onClose = function() {
   //   b.remove( b.layer('generated') );
   // };
-  
+
   myDlg.add(
     'slider',   // type
     'slider1',  // variable name
@@ -31,7 +46,7 @@ function setup() {
       valueLabel: true
     }
   );
-  
+
   myDlg.add(
     'slider',   // type
     'slider2',  // variable name
@@ -46,8 +61,10 @@ function setup() {
 
 };
 
+
+
 function draw() {
-  
+
   b.layer('generated');
   b.canvasMode(b.PAGE);
 
@@ -55,9 +72,9 @@ function draw() {
   b.rectMode(b.CENTER);
 
   b.noStroke();
-  b.fill(0);   
+  b.fill(0);
 
-  redraw();  
+  redraw();
 
 };
 
@@ -67,12 +84,13 @@ function update() {
   rot = b.floor(myDlg.slider2);
 
   redraw();
-  
+
 };
 
 
+
 function redraw() {
-  
+
   b.clear(b.layer('generated'));
 
   for( var i = 0; i < n; i++ ) {
@@ -83,7 +101,7 @@ function redraw() {
     b.rotate( b.radians(rot) );
     b.rect( 0, 0, length, h );
     b.popMatrix( );
-  
+
   }
 
 };

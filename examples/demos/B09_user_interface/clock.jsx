@@ -1,14 +1,24 @@
-#targetengine basiljs
+/**
+ *
+ * Clock
+ *
+ */
 
+#targetengine 'basiljs'
+
+
+
+//
+//  Includes
+//
 #includepath '~/Documents/;%USERPROFILE%Documents';
 #include 'basiljs/bundle/basil.js';
-#include 'basiljs/bundle/lib/control/control.jsx';
 
 
 
-// ------------------------------------------------------------------------
+//
 // Properties
-// ------------------------------------------------------------------------
+//
 var myDlg;
 
 var clock;
@@ -16,23 +26,20 @@ var clockDiameter = 250;
 
 
 
-// ------------------------------------------------------------------------
-// Setup
-// ------------------------------------------------------------------------
 function setup() {
 
   myDlg = new b.ui.palette('Clock');
   // myDlg.onClose = function() {
   //   b.remove( b.layer('generated') );
   // };
-  
+
   myDlg.add('slider', 'hour', b.hour(), {
     label: 'Hour',
     range: [0, 24],
     valueLabel: true,
     valueType: 'int'
   });
-  
+
   myDlg.add('slider', 'minute', b.minute(), {
     label: 'Minute',
     range: [0, 60],
@@ -52,9 +59,6 @@ function setup() {
 
 
 
-// ------------------------------------------------------------------------
-// Draw
-// ------------------------------------------------------------------------
 function draw() {
 
   b.layer('generated');
@@ -64,9 +68,7 @@ function draw() {
 };
 
 
-// ------------------------------------------------------------------------
-// Update
-// ------------------------------------------------------------------------
+
 function update() {
 
   b.clear( b.layer('generated') );
@@ -81,15 +83,15 @@ function update() {
 
 
 
-// ------------------------------------------------------------------------
+//
 // Methods
-// ------------------------------------------------------------------------
+//
 function Clock(centerX, centerY, diameter, time) {
   // properties
-  centerX = (centerX != undefined) 
+  centerX = (centerX != undefined)
     ? centerX
     : 0;
-  centerY = (centerY != undefined) 
+  centerY = (centerY != undefined)
     ? centerY
     : 0;
   var clockDiameter = (diameter != undefined)
@@ -99,7 +101,7 @@ function Clock(centerX, centerY, diameter, time) {
   time = (time != undefined)
     ? time
     : {hour: 2, minute: 30, second: 45};
-  
+
   // Angles for Math.sin() and Math.cos() start at 3 o'clock;
   // subtract (Math.PI*0.5) to make them start at the top
   var hour = (time.hour > 12)
@@ -110,8 +112,8 @@ function Clock(centerX, centerY, diameter, time) {
   var s = b.map(time.second, 0, 60, 0, (Math.PI*2)) - (Math.PI*0.5);
 
   var clock = [];
-  
-  // draw the clock 
+
+  // draw the clock
   b.ellipseMode(b.CENTER);
   b.noFill();
   b.stroke(0);

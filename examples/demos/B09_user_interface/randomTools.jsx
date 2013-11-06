@@ -2,10 +2,10 @@
  *
  * Random Tools
  * A palette for generating random(good)ness
- * 
+ *
  */
 
-#targetengine basiljs
+#targetengine 'basiljs'
 
 
 
@@ -14,14 +14,12 @@
 //
 #includepath '~/Documents/;%USERPROFILE%Documents';
 #include 'basiljs/bundle/basil.js';
-#include 'basiljs/bundle/lib/control/control.jsx';
 
 
 
 //
 // Properties
 //
-
 var palette;
 
 var uiConfig = {
@@ -29,7 +27,7 @@ var uiConfig = {
   //
   // stroke
   //
-  stroke: { 
+  stroke: {
     type:  'checkbox',
     label: 'Stroke',
     value: false,
@@ -51,7 +49,7 @@ var uiConfig = {
     // enabled: false
   },
 
-  strokeRule: { 
+  strokeRule: {
     type: 'separator',
     width: 'full'
   },
@@ -60,7 +58,7 @@ var uiConfig = {
   //
   // color
   //
-  color: { 
+  color: {
     type: 'checkbox',
     label: 'Color',
     value: false,
@@ -136,7 +134,7 @@ var uiConfig = {
     range: [0, 100]
   },
 
-  colorRule: { 
+  colorRule: {
     type: 'separator',
     width: 'full'
   },
@@ -145,7 +143,7 @@ var uiConfig = {
   //
   // transparency
   //
-  transparency: { 
+  transparency: {
     type: 'checkbox',
     label: 'Opacity',
     value: false,
@@ -166,17 +164,17 @@ var uiConfig = {
     range: [0, 100]
   },
 
-  transparencyRule: { 
+  transparencyRule: {
     type: 'separator',
     width: 'full'
   },
 
 
-  // 
+  //
   // Invocation
-  // 
-  submit: { 
-    type: 'button', 
+  //
+  submit: {
+    type: 'button',
     value: 'Apply',
     width: 'full',
     onClick: function() {
@@ -190,9 +188,6 @@ var uiConfig = {
 
 
 
-// ------------------------------------------------------------------------
-// Setup
-// ------------------------------------------------------------------------
 function setup() {
   b.colorMode(b.CMYK);
 
@@ -201,18 +196,12 @@ function setup() {
 
 
 
-// ------------------------------------------------------------------------
-// Draw
-// ------------------------------------------------------------------------
 function draw() {
 
 };
 
 
 
-// ------------------------------------------------------------------------
-// Update
-// ------------------------------------------------------------------------
 function update() {
 
   b.selections(function(item, i){
@@ -246,7 +235,7 @@ function update() {
 
     //
     //  transparency
-    //  
+    //
     if( palette.transparency ) {
       b.opacity( item, b.random( palette.transparencyMin,palette.transparencyMax ) );
     }
@@ -256,9 +245,9 @@ function update() {
 };
 
 
-// ------------------------------------------------------------------------
+//
 // Methods
-// ------------------------------------------------------------------------
+//
 function randomSwatch(start) {
   return b.doc().swatches[ parseInt( b.random(start,b.doc().swatches.length) ) ];
 };
