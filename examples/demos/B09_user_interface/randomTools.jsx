@@ -20,7 +20,7 @@
 //
 // Properties
 //
-var palette;
+var dialog;
 
 var uiConfig = {
 
@@ -191,7 +191,7 @@ var uiConfig = {
 function setup() {
   b.colorMode(b.CMYK);
 
-  palette = new b.ui.dialog(b.PALETTE, 'Random Tools', controllers);
+  dialog = new b.ui.dialog(b.PALETTE, 'Random Tools', controllers);
 };
 
 
@@ -208,36 +208,36 @@ function update() {
     //
     //  stroke
     //
-    if( palette.stroke ) {
-      item.strokeWeight = b.random( palette.strokeMin, palette.strokeMax );
+    if( dialog.stroke ) {
+      item.strokeWeight = b.random( dialog.strokeMin, dialog.strokeMax );
     }
 
     //
     //  color
     //
-    if( palette.color ) {
+    if( dialog.color ) {
       var color;
-      if( palette.colorSwatches ) {
+      if( dialog.colorSwatches ) {
         // pull a random swatch, start with swatch 3 (typically black)
         color = randomSwatch(3);
       }
       else {
         color = b.color(
-          parseInt( b.random( palette.color_c_min, palette.color_c_max ) ),
-          parseInt( b.random( palette.color_m_min, palette.color_m_max ) ),
-          parseInt( b.random( palette.color_y_min, palette.color_y_max ) ),
-          parseInt( b.random( palette.color_k_min, palette.color_k_max ) )
+          parseInt( b.random( dialog.color_c_min, dialog.color_c_max ) ),
+          parseInt( b.random( dialog.color_m_min, dialog.color_m_max ) ),
+          parseInt( b.random( dialog.color_y_min, dialog.color_y_max ) ),
+          parseInt( b.random( dialog.color_k_min, dialog.color_k_max ) )
         );
       }
-      if( palette.colorFill )   item.fillColor = color;
-      if( palette.colorStroke ) item.strokeColor = color;
+      if( dialog.colorFill )   item.fillColor = color;
+      if( dialog.colorStroke ) item.strokeColor = color;
     }
 
     //
     //  transparency
     //
-    if( palette.transparency ) {
-      b.opacity( item, b.random( palette.transparencyMin,palette.transparencyMax ) );
+    if( dialog.transparency ) {
+      b.opacity( item, b.random( dialog.transparencyMin,dialog.transparencyMax ) );
     }
 
  });

@@ -19,7 +19,7 @@
 //
 // Properties
 //
-var myDlg;
+var dialog;
 
 var clock;
 var clockDiameter = 250;
@@ -28,26 +28,26 @@ var clockDiameter = 250;
 
 function setup() {
 
-  myDlg = new b.ui.palette('Clock');
-  // myDlg.onClose = function() {
+  dialog = new b.ui.palette('Clock');
+  // dialog.onClose = function() {
   //   b.remove( b.layer('generated') );
   // };
 
-  myDlg.add('slider', 'hour', b.hour(), {
+  dialog.add('slider', 'hour', b.hour(), {
     label: 'Hour',
     range: [0, 24],
     valueLabel: true,
     valueType: 'int'
   });
 
-  myDlg.add('slider', 'minute', b.minute(), {
+  dialog.add('slider', 'minute', b.minute(), {
     label: 'Minute',
     range: [0, 60],
     valueLabel: true,
     valueType: 'int'
   });
 
-  myDlg.add('slider', 'second', b.second(), {
+  dialog.add('slider', 'second', b.second(), {
     label: 'Second',
     range: [0, 60],
     valueLabel: true,
@@ -74,9 +74,9 @@ function update() {
   b.clear( b.layer('generated') );
 
   clock = new Clock( b.width/2,b.height/2, clockDiameter, {
-    hour:   myDlg.hour,
-    minute: myDlg.minute,
-    second: myDlg.second
+    hour:   dialog.hour,
+    minute: dialog.minute,
+    second: dialog.second
   });
 
 };

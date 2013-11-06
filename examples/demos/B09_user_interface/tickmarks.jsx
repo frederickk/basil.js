@@ -22,7 +22,7 @@
 var h = 1;
 var n = 60;
 
-var myDlg;
+var dialog;
 var length = 15;
 var rot = 0;
 
@@ -30,12 +30,12 @@ var rot = 0;
 
 function setup() {
 
-  myDlg = control.palette('Tickmarks');
-  // myDlg.onClose = function() {
+  dialog = control.palette('Tickmarks');
+  // dialog.onClose = function() {
   //   b.remove( b.layer('generated') );
   // };
 
-  myDlg.add(
+  dialog.add(
     'slider',   // type
     'slider1',  // variable name
     length,     // initial value
@@ -47,7 +47,7 @@ function setup() {
     }
   );
 
-  myDlg.add(
+  dialog.add(
     'slider',   // type
     'slider2',  // variable name
     rot,        // initial value
@@ -80,8 +80,8 @@ function draw() {
 
 function update() {
 
-  length = b.floor(myDlg.slider1);
-  rot = b.floor(myDlg.slider2);
+  length = b.floor(dialog.slider1);
+  rot = b.floor(dialog.slider2);
 
   redraw();
 
