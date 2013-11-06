@@ -8,9 +8,9 @@
  *  - components are not respecting width: "full"
  *  - fix independent label bug
  *  - major bug with prompts, need support .add()
- *  
+ *
  *  ROADMAP:
- *  - implement missing/additional controllers
+ *  / implement missing/additional controllers
  *  - add layout customizeability
  */
 
@@ -42,7 +42,6 @@ var uiProperties = {
  * Create simple user interfaces
  * @cat UI
  */
-pub.ui = null;
 pub.ui = {
   /**
    * Creates a dialog window
@@ -54,14 +53,14 @@ pub.ui = {
    *   }
    * };
    * var dialog = new ui.dialog(b.PALETTE, "Interface Example", uiConfig);
-   * 
+   *
    * @cat UI
    * @subcat dialog
    * @method dialog
    * @param {String} type           b.PALETTE or b.PROMPT
    * @param {String} name           the name of the controller window
    * @param {Array} controllerList  array of controllers
-   * 
+   *
    * @return {Array} ui properties and methods
    */
   dialog: function(type, name, controllerList) {
@@ -70,17 +69,17 @@ pub.ui = {
     controllerList = (controllerList != undefined) ? controllerList : {};
 
     var base = function() {
-      win = uiProperties.win = new Window("window", name, undefined);
+      win = uiProperties.win = new Window("palette", name.toString(), undefined, undefined);
       win.orientation = "row";
       // win.alignChildren = "fill";
 
       uiProperties.typeface = ScriptUI.newFont(type, ScriptUI.FontStyle.REGULAR, uiProperties.typesize);
 
-      if( type == "dialog" || type == "prompt" ) {
-        // always include a basil.js logo with prompts
-        var logoGroup = win.add("group");
-        logoGroup.add("image", undefined, File("~/Documents/basiljs/bundle/lib/basil_simple.png"));
-      }
+      // if( type === "dialog" || type === "prompt" ) {
+      //   // always include a basil.js logo with prompts
+      //   var logoGroup = win.add("group");
+      //   logoGroup.add("image", undefined, File("~/Documents/basiljs/bundle/lib/basil_simple.png"));
+      // }
 
       var mainGroup = win.add("group");
       mainGroup.orientation = "column";
@@ -92,10 +91,10 @@ pub.ui = {
 
       // create core return values
       uiProperties.winValue = {
-        window:  uiProperties.win,             // this initiated window (palette)
-        update:  uiProperties.win.update,      // this window"s update function
+        window:  win,               // this initiated window (palette)
+        update:  win.update,        // this window"s update function
         add:     addController,     // add controllers on-the-fly
-        remove:  removeController,  // remove controllers on-the-fly 
+        remove:  removeController,  // remove controllers on-the-fly
         onClose: function() {}      // callback for window onClose
       };
 
@@ -111,7 +110,7 @@ pub.ui = {
         uiProperties.update();
       });
 
-      if( type == "dialog" || type == "prompt" ) {
+      if( type === "dialog" || type === "prompt" ) {
         var buttongroup = mainGroup.add("group");
         buttongroup.alignment = "right";
 
@@ -125,6 +124,7 @@ pub.ui = {
         ok.graphics.font = uiProperties.typeface;
         ok.onClick = function() {
           win.close(1);
+          runDrawOnce();
           runUpdateOnce();
         };
       }
@@ -165,7 +165,7 @@ pub.ui = {
      * add controller to the current control window
      * var slider = dialog.add("slider", "mySlider", 100, {range: [10,200]});
      *
-     * @param {String} type       the controller type 
+     * @param {String} type       the controller type
      * @param {String} name       the name of the controller (also it"s variable name)
      * @param {Number} value      the controller"s initial value
      * @param {Array} properties  controller properties (i.e type, label, range, etc.), optional
@@ -177,15 +177,15 @@ pub.ui = {
       properties["type"] = (arguments[0] != undefined) ? arguments[0].toLowerCase() : "undefined";
       properties["name"] = arguments[1];
 
-      // if properties.value != undefined use that 
-      // if value == number || value == string use that
+      // if properties.value != undefined use that
+      // if value === number || value === string use that
       // if there are only 3 arguments use properties.value
       // else use null
       properties["value"] = ( properties["value"] != undefined )
         ? properties["value"]
-        : (typeof arguments[2] == "number" || typeof arguments[2] == "string"
+        : (typeof arguments[2] === "number" || typeof arguments[2] === "string"
           ? arguments[2]
-          : (arguments.length == 3
+          : (arguments.length === 3
             ? arguments[2].value
             : null));
 
@@ -198,7 +198,7 @@ pub.ui = {
           uiProperties.winControllerList[name] = controller = new pub.controllers().Checkbox(name, uiProperties.winControllersGroup, properties);
         }
         else if( properties["type"] === "color") {
-        //   uiProperties.winControllerList[name] = controller = new pub.controllers().Color(name, uiProperties.winControllersGroup, properties);
+          uiProperties.winControllerList[name] = controller = new pub.controllers().Color(name, uiProperties.winControllersGroup, properties);
         }
         else if( properties["type"] === "radio") {
         //   uiProperties.winControllerList[name] = controller = new pub.controllers().Radio(name, uiProperties.winControllersGroup, properties);
@@ -216,7 +216,7 @@ pub.ui = {
           uiProperties.winControllerList[name] = controller = new pub.controllers().Slider(name, uiProperties.winControllersGroup, properties);
         }
         else if( properties["type"] === "dropdown") {
-        //   uiProperties.winControllerList[name] = controller = new pub.controllers().Dropdown(name, uiProperties.winControllersGroup, properties);
+          uiProperties.winControllerList[name] = controller = new pub.controllers().Dropdown(name, uiProperties.winControllersGroup, properties);
         }
         else if( properties["type"] === "separator") {
           uiProperties.winControllerList[name] = controller = new pub.controllers().Separator(name, uiProperties.winControllersGroup, properties);
@@ -230,6 +230,7 @@ pub.ui = {
       }
 
       if( controller != null ) {
+        adjustLayout( uiProperties.winControllersGroup );
         uiProperties.win[name] = controller;
         uiProperties.win.layout.layout( true );
         uiProperties.update();
@@ -241,7 +242,7 @@ pub.ui = {
     /*
      * remove controller from current control window
      * @param {String} name       the name of the controller to remove
-     * 
+     *
      * @return {Boolean} true if control found and removed, false otherwise
      */
     function removeController(name) {
@@ -260,14 +261,14 @@ pub.ui = {
     function adjustLayout(container) {
       for ( var i=0; i<container.children.length; i++) {
         var child = container.children[i];
-        adjustFullWidth( child );   // adjust full width elements
+        // adjustFullWidth( child );   // adjust full width elements
         adjustLabelWidth( child );  // adjust label sizes
-        adjustSpacing( child );     // adjust spacing
+        // adjustSpacing( child );     // adjust spacing
         if( typeof child.layout != "undefined" ) child.layout.layout( true );
 
         for ( var j=0; j<child.children.length; j++ ) {
           var grandChild = child.children[j];
-          adjustFullWidth( grandChild );   // adjust full width elements
+          // adjustFullWidth( grandChild );   // adjust full width elements
           adjustLabelWidth( grandChild );  // adjust label sizes
           if( typeof grandChild.layout != "undefined" ) grandChild.layout.layout( true );
         }
@@ -279,14 +280,14 @@ pub.ui = {
       uiProperties.win.layout.layout( true );
     };
     function adjustFullWidth(child) {
-      if( child.properties.width == "full" ) {
+      if( child.properties.width === "full" ) {
         // child.size.width = child.preferredSize.width = child.maximumSize.width = uiProperties.win.size.width;
         // child.size.width = child.preferredSize.width = child.maximumSize.width = parent.maximumSize.width;
         child.alignment = ["center","center"];
       }
     };
     function adjustLabelWidth(child) {
-      if( child.type == "statictext" && child.properties.name == "label" ) {
+      if( child.type === "statictext" && child.properties.name === "label" ) {
         child.size.width = uiProperties.maximumLabelWidth;
       }
     };
@@ -300,7 +301,7 @@ pub.ui = {
 
   /**
    * Displays a prompt dialog window
-   * 
+   *
    * @cat UI
    * @subcat dialog
    * @method prompt
@@ -314,7 +315,7 @@ pub.ui = {
 
   /**
    * Creates a modeless interface window, also called a floating palette.
-   * 
+   *
    * @cat UI
    * @subcat dialog
    * @method palette
@@ -340,7 +341,7 @@ pub.controllers = function() {
   /*
    * Private
    * controller initialization of base properties for every controller
-   * 
+   *
    * @param {Array} properties    Basil.js controller properties (i.e type, label, range, etc.)
    *
    * @return {Array} properties
@@ -370,23 +371,23 @@ pub.controllers = function() {
   /*
    * Private
    * initialization of Text Controller properties
-   * 
+   *
    * @param {Array} properties
    * @return {Array} properties
    */
   var initText = function(properties) {
     return mergeArray({
         length:     null,
-        maxLength:  22,        /* default: 22 (== width: 200px) */
+        maxLength:  22,        /* default: 22 (=== width: 200px) */
         multiline:  false,     /* default: false */
         columns:    null,
         rows:       null,
         alignment:  "center",  /* default: "center" */
         valueType:  (properties.valueType != undefined)
                       ? properties.valueType
-                      : (typeof properties.value == "number")
+                      : (typeof properties.value === "number")
                         ? "float"
-                        : "string"  /* default: "string" */ 
+                        : "string"  /* default: "string" */
       },
       init(properties));
   };
@@ -394,7 +395,7 @@ pub.controllers = function() {
   /*
    * Private
    * initialization of Range Controller properties
-   * 
+   *
    * @param {Array} properties
    * @return {Array} properties
    */
@@ -411,7 +412,7 @@ pub.controllers = function() {
                       : (properties.value != undefined)
                         ? properties.value
                         : 1.0) ], /* default: [0.0,1.0] */
-      min:    (properties.min != undefined) 
+      min:    (properties.min != undefined)
                 ? properties.min
                 : (properties.range != undefined)
                   ? this.range[0]
@@ -429,16 +430,62 @@ pub.controllers = function() {
 
   /*
    * Private
+   * initialization of Color Controller properties
+   *
+   * @param {Array} properties
+   * @return {Array} properties
+   */
+  var initColor = function(properties) {
+    return mergeArray({
+        color:      properties.value,
+        colormode:  (properties.colormode != null)
+                      ? properties.colormode
+                      : (typeof properties.value === "number")
+                        ? "float"
+                        : "string",  /* default: "string" */
+        size:       (properties.size === "small")
+                      ? 12
+                      : (properties.size === "large")
+                        ? 28
+                        : 18 // "medium"
+      },
+      init(properties));
+  };
+  /*
+   * Private
+   * initialization of List Controller properties
+   *
+   * @param {Array} properties
+   * @return {Array} properties
+   */
+  var initList = function(properties) {
+    return mergeArray({
+        items:      [],
+        alignment:  "center", /* default: "center" */
+        value:      (properties.value != null)
+                      ? properties.value
+                      : properties.items[0],
+        valueType:  (properties.valueType != undefined)
+                      ? properties.valueType
+                      : (typeof properties.value === "number")
+                        ? "float"
+                        : "string"  /* default: "string" */
+      },
+      init(properties));
+  };
+
+  /*
+   * Private
    * update a property with a specific value
-   * 
+   *
    * @param {Array} properties
    * @param {Object} value
    * @return {Array} properties
    */
   var updateValue = function(properties, value) {
-    return (properties.valueType == "int")
+    return (properties.valueType === "int")
       ? parseInt(value)
-      : (properties.valueType == "string"
+      : (properties.valueType === "string"
         ? value.toString()
         : precision(value,2)); // default float
   };
@@ -469,13 +516,10 @@ pub.controllers = function() {
     }
 
     var clickCount = 0;
-    var button = group.add("button", undefined, properties.value, properties ); /*{
-      name: name,
-      width: properties.width
-    });*/
+    var button = group.add("button", undefined, properties.value, properties );
     button.graphics.font = uiProperties.typeface;
     button.preferredSize.height = properties.height;
-    button.preferredSize.width = (properties.width == "full")
+    button.preferredSize.width = (properties.width === "full")
       ? uiProperties.win.preferredSize.width
       : properties.width;
 
@@ -524,7 +568,7 @@ pub.controllers = function() {
     check.value = properties.value;
 
     check.onClick = function() {
-      var value = (properties.valueType == "int")
+      var value = (properties.valueType === "int")
         ? ((this.value) ? 1 : 0)
         : this.value;
       properties["value"] = value;
@@ -536,7 +580,7 @@ pub.controllers = function() {
       return value;
     };
 
-    properties["value"] = (properties.valueType == "int")
+    properties["value"] = (properties.valueType === "int")
       ? ((check.value) ? 1 : 0)
       : check.value;
     return properties;
@@ -563,7 +607,7 @@ pub.controllers = function() {
    * @method color
    * @param {String} name         the (variable) name of the Controller
    * @param {GroupSUI} container  the name of the Group (ScriptUI) the Controller is drawn in
-   * @param {Array} properties    Basil.js Range Controller properties (i.e type, label, range, etc.)
+   * @param {Array} properties    Basil.js Color Controller properties (i.e type, label, range, etc.)
    *
    * @return {Array} properties
    */
@@ -571,7 +615,7 @@ pub.controllers = function() {
   };
 
   /**
-   * A static text field that the user cannot change 
+   * A static text field that the user cannot change
    * @cat UI
    * @subcat controllers
    * @method label
@@ -583,6 +627,7 @@ pub.controllers = function() {
    */
   function Label(name, container, properties) {
     properties = initText(properties);
+    properties.name = name;
     properties.valueType = "string";
     var labelText = (properties.value != null)
       ? properties.label + "\u00A0" + properties.value
@@ -593,13 +638,13 @@ pub.controllers = function() {
       width: properties.width
     });*/
     // var xwidth = label.preferredSize[0];
-    // uiProperties.maximumLabelWidth = (labelText.length*xwidth > uiProperties.maximumLabelWidth) 
+    // uiProperties.maximumLabelWidth = (labelText.length*xwidth > uiProperties.maximumLabelWidth)
     //   ? labelText.length*xwidth
     //   : uiProperties.maximumLabelWidth;
     label.justify = "right";
     label.graphics.font = uiProperties.typeface;
 
-    // if( label.characters == null ) {
+    // if( label.characters === null ) {
     //   // TODO: define and allow maximum width override
     //   var width = (uiProperties.maximumLabelWidth < 200) ? uiProperties.maximumLabelWidth : 200;
     //   label.preferredSize = [,-1];
@@ -611,7 +656,7 @@ pub.controllers = function() {
     label.alignment = properties.alignment;
 
     // set longest label for layout adjustment
-    uiProperties.maximumLabelWidth = (label.preferredSize[0] > uiProperties.maximumLabelWidth) 
+    uiProperties.maximumLabelWidth = (label.preferredSize[0] > uiProperties.maximumLabelWidth)
       ? label.preferredSize[0]
       : uiProperties.maximumLabelWidth;
 
@@ -659,7 +704,7 @@ pub.controllers = function() {
           : (properties.multiline && properties.length == undefined)
             ? properties.maxLength-2 // -2 accounts for width for scrollbar
             :  properties.maxLength;
-    text.minimumSize.height = (properties.multiline && properties.rows != undefined) 
+    text.minimumSize.height = (properties.multiline && properties.rows != undefined)
       ? (uiProperties.typesize+2)*(properties.rows+1)
       : (uiProperties.typesize+2)*1;
     text.graphics.font = uiProperties.typeface;
@@ -806,6 +851,47 @@ pub.controllers = function() {
    * @return {Array} properties
    */
   function Dropdown(name, container, properties) {
+    properties = initList(properties);
+
+    var group = container.add("group");
+    group.orientation = "row";
+
+    var label = new Label("label", group, {
+      alignment: "center",
+      label: properties.label
+    });
+
+    var dropdown = group.add("dropdownlist", undefined, undefined,
+      properties
+    );
+    dropdown.selection = (properties.items.findIndex( properties.value ) != undefined)
+      ? properties.items.findIndex( properties.value )
+      : 0; // select first element
+    dropdown.graphics.font = uiProperties.typeface;
+
+    dropdown.onClick = function() {
+      var value = updateValue(properties,this.selection.text);
+      properties["value"] = value;
+      uiProperties.update();
+
+      properties.onClick(value);
+      runUpdateOnce();
+
+      return value;
+    };
+    dropdown.onChange = function() {
+      var value = updateValue(properties,this.selection.text);
+      properties["value"] = value;
+      uiProperties.update();
+
+      properties.onChange(value);
+      runUpdateOnce();
+
+      return value;
+    };
+
+    properties["value"] = updateValue(properties,dropdown.selection.text);
+    return properties;
   };
 
   /**
@@ -847,13 +933,13 @@ pub.controllers = function() {
   return {
     Button: Button,
     Checkbox: Checkbox,
-    // Color: Color,
+    Color: Color,
     // Radio: Radio,
     Label: Label,
     Textfield: Textfield,
     // Progress: Progress,
     Slider: Slider,
-    // Dropdown: Dropdown,
+    Dropdown: Dropdown,
     Separator: Separator
   };
 
@@ -865,16 +951,27 @@ pub.controllers = function() {
  * merge two arrays together
  * http://stackoverflow.com/questions/929776/merging-associative-arrays-javascript (modified)
  */
-function mergeArray(base, arr) {
-  for(item in base) {
-    arr[item] = (arr[item] != undefined)
-      ? arr[item]
-      : base[item];
-  }
-  return arr;
-};
+// if (!Array.prototype.merge) {
+  function mergeArray(base, arr) {
+    for(item in base) {
+      arr[item] = (arr[item] != undefined)
+        ? arr[item]
+        : base[item];
+    }
+    return arr;
+  };
+// }
 
-
+if (!Array.prototype.findIndex) {
+  Array.prototype.findIndex = function(search){
+    for (var i=this.length-1; i>=0; i--) {
+      if (this[i].toLowerCase() === search.toLowerCase()){
+          break;
+      }
+    }
+    return i;
+  };
+}
 
 function printProperties(obj) {
   $.writeln("------------------");
