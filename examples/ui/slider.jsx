@@ -27,14 +27,12 @@ function setup() {
   // );
 
   dialog = new b.ui.dialog( b.PALETTE, 'Slider Example' );
-  // dialog.add('slider', 'theSlider', 100, {
-  //   label: 'Slider',
-  //   onChanging: function(value) {
-  //     b.println( 'My Slider is changing ' + value );
-  //   }
-  // });
-
-  b.nextPage();
+  dialog.add('slider', 'theSlider', 100, {
+    label: 'Slider',
+    onChanging: function(value) {
+      b.println( 'My Slider is changing ' + value );
+    }
+  });
 
 };
 
