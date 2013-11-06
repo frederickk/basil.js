@@ -25,47 +25,31 @@
 var dialog;
 
 var uiConfig = {
+  pathType: {
+    type: 'dropdown',
+    label: 'Path Type',
+    items: ['rectangle', 'diamond', 'pentagon', 'hexagon', 'ellipse'],
+    value: 'rectangle'
+  },
   width: {
-    type: 'number',
+    type: 'textfield',
     label: 'Width',
+    valueType: 'float',
     value: 200
   },
   height: {
-    type: 'number',
+    type: 'textfield',
     label: 'Height',
+    valueType: 'float',
     value: 100
-  },
-  radius: {
-    type: 'number',
-    label: 'Corner Radius',
-    radius: 10
   },
   // color: {
   //  type: 'color',
-  //  label: 'Circle Color',
+  //  label: 'Color',
   //  colorMode: 'rgb',
   //  value: [1, 0.5, 0]
-  // },
+  // }
 
-  // The create button, with an onClick() handler that creates the
-  // rectangle for us:
-  create: {
-    type: 'button', value: 'Create',
-    onClick: function() {
-      // Create a RoundRectangle at coordinate 0, 0, with the
-      // size defined by values.widht and values.height, and
-      // a corner radius of values.radius.
-      // Note: The radius needs to be converted to a size,
-      // as horizontal and vertical corner size is defined
-      // seperately
-      var path = new Path.RoundRectangle(
-          new Point(0, 0), // topLeft corner
-          new Size(values.width, values.height), // size
-          new Size(values.radius)); // round corner size
-      // Set the fill color to the color selected by the user
-      path.fillColor = values.color;
-    }
-  }
 };
 
 
@@ -75,6 +59,9 @@ function setup() {
 
   b.layer('generated');
   b.canvasMode(b.PAGE);
+
+  b.ellipseMode(b.CENTER)
+  b.rectMode(b.CENTER)
 };
 
 
@@ -85,8 +72,41 @@ function draw() {
 
 
 function update() {
+  b.clear(b.layer('generated'));
+
+  b.fill(0);
+  if( dialog.pathType === 'rectangle' ) {
+    b.rect(b.width/2, b.height/2, dialog.width, dialog.height);
+  }
+  else if( dialog.pathType === 'diamond' ) {
+    polygon(b.width/2, b.height/2, dialog.width, dialog.height, 4);
+  }
+  else if( dialog.pathType === 'pentagon' ) {
+    polygon(b.width/2, b.height/2, dialog.width, dialog.height, 5);
+  }
+  else if( dialog.pathType === 'hexagon' ) {
+    polygon(b.width/2, b.height/2, dialog.width, dialog.height, 6);
+  }
+  else if( dialog.pathType === 'ellipse' ) {
+    b.ellipse(b.width/2, b.height/2, dialog.width, dialog.height);
+  }
 };
 
+
+
+//
+// Methods
+//
+var polygon = function(x, y, w, h, num) {
+  b.beginShape();
+  for( var i=0; i<num; i++ ) {
+    b.vertex(
+      x + (w/2) * b.cos(i * 2 * b.PI / num),
+      y + (h/2) * b.sin(i * 2 * b.PI / num)
+    );
+  }
+  return b.endShape();
+};
 
 
 b.go();
