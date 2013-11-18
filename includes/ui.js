@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // ----------------------------------------
 // UI
 
@@ -982,6 +981,4 @@ function printProperties(obj) {
     $.writeln( array[i] );
   }
 };
-=======
-// Hey Ken, this is your new home...
->>>>>>> upstream/master
+
