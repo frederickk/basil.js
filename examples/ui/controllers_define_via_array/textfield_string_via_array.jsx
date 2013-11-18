@@ -14,7 +14,7 @@ var uiConfig = {
     onChanging: function(value) {
       b.println( 'My Textfield is changing ' + value );
     }
-  }
+  },
   theTextfieldMulti: {
     type: 'textfield',
     label: 'Textfield',
