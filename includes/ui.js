@@ -349,7 +349,9 @@ pub.controllers = function() {
    * @return {Array} properties
    */
   var init = function(properties) {
-    var propertiesBase = {
+    // ensures that each controller has the core
+    // set of properties
+    return mergeArray({
       type:       null,
       name:       null,
       label:      (properties.label != undefined) ? properties.label + "\u00A0" : "\u00A0",
@@ -364,10 +366,7 @@ pub.controllers = function() {
       onClick:    function(value){},
       onChange:   function(value){},
       onChanging: function(value){}
-    };
-    // ensures that each controller has the core
-    // set of properties
-    return mergeArray(propertiesBase, properties);
+    }, properties);
   };
 
   /*
@@ -378,20 +377,19 @@ pub.controllers = function() {
    * @return {Array} properties
    */
   var initText = function(properties) {
-    return mergeArray({
-        length:     null,
-        maxLength:  22,        /* default: 22 (=== width: 200px) */
-        multiline:  false,     /* default: false */
-        columns:    null,
-        rows:       null,
-        alignment:  "center",  /* default: "center" */
-        valueType:  (properties.valueType != undefined)
-                      ? properties.valueType
-                      : (typeof properties.value === "number")
-                        ? "float"
-                        : "string"  /* default: "string" */
-      },
-      init(properties));
+    return mergeArray( init(properties), {
+      length:     null,
+      maxLength:  22,        /* default: 22 (=== width: 200px) */
+      multiline:  false,     /* default: false */
+      columns:    null,
+      rows:       null,
+      alignment:  "center",  /* default: "center" */
+      valueType:  (properties.valueType != undefined)
+                    ? properties.valueType
+                    : (typeof properties.value === "number")
+                      ? "float"
+                      : "string"  /* default: "string" */
+    });
   };
 
   /*
@@ -402,7 +400,7 @@ pub.controllers = function() {
    * @return {Array} properties
    */
   var initRange = function(properties) {
-    return mergeArray({
+    return mergeArray( init(properties), {
       // wrap your head around this!
       range: (properties.range != undefined)
                 ? properties.range
@@ -413,21 +411,20 @@ pub.controllers = function() {
                       ? properties.max
                       : (properties.value != undefined)
                         ? properties.value
-                        : 1.0) ], /* default: [0.0,1.0] */
+                        : 1.0) ], // default: [0.0,1.0]
       min:    (properties.min != undefined)
                 ? properties.min
                 : (properties.range != undefined)
-                  ? this.range[0]
-                  : 0.0, /* default: 0.0 */
+                  ? properties.range[0]
+                  : 0.0,  // default: 0.0
       max:    (properties.max != undefined)
                 ? properties.max
-                : (properties.range != undefined)
-                  ? properties.range[1]
-                  : (properties.value != undefined)
-                    ? properties.value
-                    : 1.0  /* default: 1.0 */
-      },
-      init(properties));
+                : (properties.value != undefined)
+                  ? properties.value
+                  : (properties.range != undefined)
+                    ? properties.range[1]
+                    : 1.0  // default: 1.0
+    });
   };
 
   /*
@@ -438,20 +435,19 @@ pub.controllers = function() {
    * @return {Array} properties
    */
   var initColor = function(properties) {
-    return mergeArray({
-        color:      properties.value,
-        colormode:  (properties.colormode != null)
-                      ? properties.colormode
-                      : (typeof properties.value === "number")
-                        ? "float"
-                        : "string",  /* default: "string" */
-        size:       (properties.size === "small")
-                      ? 12
-                      : (properties.size === "large")
-                        ? 28
-                        : 18 // "medium"
-      },
-      init(properties));
+    return mergeArray( init(properties), {
+      color:      properties.value,
+      colormode:  (properties.colormode != null)
+                    ? properties.colormode
+                    : (typeof properties.value === "number")
+                      ? "float"
+                      : "string",  /* default: "string" */
+      size:       (properties.size === "small")
+                    ? 12
+                    : (properties.size === "large")
+                      ? 28
+                      : 18 // "medium"
+    });
   };
   /*
    * Private
@@ -461,19 +457,18 @@ pub.controllers = function() {
    * @return {Array} properties
    */
   var initList = function(properties) {
-    return mergeArray({
-        items:      [],
-        alignment:  "center", /* default: "center" */
-        value:      (properties.value != null)
-                      ? properties.value
-                      : properties.items[0],
-        valueType:  (properties.valueType != undefined)
-                      ? properties.valueType
-                      : (typeof properties.value === "number")
-                        ? "float"
-                        : "string"  /* default: "string" */
-      },
-      init(properties));
+    return mergeArray( init(properties), {
+      items:      [],
+      alignment:  "center", /* default: "center" */
+      value:      (properties.value != null)
+                    ? properties.value
+                    : properties.items[0],
+      valueType:  (properties.valueType != undefined)
+                    ? properties.valueType
+                    : (typeof properties.value === "number")
+                      ? "float"
+                      : "string"  /* default: "string" */
+    });
   };
 
   /*
@@ -767,6 +762,7 @@ pub.controllers = function() {
    */
   function Slider(name, container, properties) {
     properties = initRange(properties);
+    b.inspect( properties );
 
     var group = container.add("group");
     group.orientation = "row";
