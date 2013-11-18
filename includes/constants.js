@@ -118,8 +118,8 @@ pub.CHORD = "chord";
 pub.PIE = "pie";
 
 /**
- * Round, used for strokeCap()
- * @property ROUND {String}
+ * Round, used for strokeCap() or  or strokeJoin()
+ * @property ROUND {Object}
  * @cat Document
  * @subcat Primitives
  */
@@ -127,7 +127,7 @@ pub.ROUND = EndCap.ROUND_END_CAP;
 
 /**
  * Square, used for strokeCap()
- * @property SQUARE {String}
+ * @property SQUARE {Object}
  * @cat Document
  * @subcat Primitives
  */
@@ -135,11 +135,27 @@ pub.SQUARE = EndCap.BUTT_END_CAP;
 
 /**
  * Project, used for strokeCap()
- * @property PROJECT {String}
+ * @property PROJECT {Object}
  * @cat Document
  * @subcat Primitives
  */
 pub.PROJECT = EndCap.PROJECTING_END_CAP;
+
+/**
+ * Square, used for strokeJoin()
+ * @property SQUARE {Object}
+ * @cat Document
+ * @subcat Primitives
+ */
+pub.MITER = EndJoin.MITER_END_JOIN;
+
+/**
+ * Project, used for strokeJoin()
+ * @property PROJECT {Object}
+ * @cat Document
+ * @subcat Primitives
+ */
+pub.BEVEL = EndJoin.BEVEL_END_JOIN;
 
 /**
  * Two Pi

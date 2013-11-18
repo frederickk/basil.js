@@ -46,8 +46,8 @@ if(w === 0 || h === 0)
   var newOval = ovals.add( currentLayer() );
   with (newOval) {
     strokeWeight = currStrokeWeight;
-    strokeCap = currStrokeCap;
-    strokeJoin = currStrokeJoin;
+    endCap = currStrokeCap;
+    endJoin = currStrokeJoin;
     strokeTint = currStrokeTint;
     fillColor = currFillColor;
     fillTint = currFillTint;
@@ -92,6 +92,8 @@ pub.line = function(x1, y1, x2, y2) {
   var newLine = lines.add( currentLayer() );
   with (newLine) {
     strokeWeight = currStrokeWeight;
+    endCap = currStrokeCap;
+    endJoin = currStrokeJoin;
     strokeTint = currStrokeTint;
     fillColor = currFillColor;
     fillTint = currFillTint;
@@ -356,6 +358,8 @@ function addPolygon() {
   }
   with (currPolygon) {
     strokeWeight = currStrokeWeight;
+    endCap = currStrokeCap;
+    endJoin = currStrokeJoin;
     strokeTint = currStrokeTint;
     fillColor = currFillColor;
     fillTint = currFillTint;
@@ -409,6 +413,8 @@ pub.rect = function(x, y, w, h){
   with (newRect) {
     geometricBounds = rectBounds;
     strokeWeight = currStrokeWeight;
+    endCap = currStrokeCap;
+    endJoin = currStrokeJoin;
     strokeTint = currStrokeTint;
     fillColor = currFillColor;
     fillTint = currFillTint;
@@ -509,7 +515,7 @@ pub.strokeWeight = function (weight) {
  * @cat Document
  * @subcat Attributes
  * @method strokeCap
- * @param {String} cap The end cap of the stroke. Must be one of the InDesign Justification enum values:
+ * @param {Object} cap The end cap of the stroke. Must be one of the InDesign EndCap enum values:
  *                           EndCap.ROUND_END_CAP <br />
  *                           EndCap.BUTT_END_CAP <br />
  *                           EndCap.PROJECTING_END_CAP <br />
@@ -547,10 +553,10 @@ pub.strokeCap = function (cap, side) {
   // pub.ARROWHEAD_SQUARE_SOLID = dot.leftLineEnd = ArrowHead.SQUARE_SOLID_ARROW_HEAD;
   // pub.ARROWHEAD_BAR = dot.leftLineEnd = ArrowHead.BAR_ARROW_HEAD;
   //
-  if (typeof cap === 'string') {
+  if (typeof cap === 'object') {
     currStrokeCap = cap;
   } else {
-    error("b.strokeCap, not supported type. Please make sure the strokeCap is a string");
+    error("b.strokeCap, not supported type. Please make sure the strokeCap is a valid constant");
   }
 };
 
@@ -561,22 +567,18 @@ pub.strokeCap = function (cap, side) {
  * @cat Document
  * @subcat Attributes
  * @method strokeJoin
- * @param {String} join The connecting joint of the stroke.  Must be one of the InDesign Justification enum values:
+ * @param {Object} join The connecting joint of the stroke. Must be one of the InDesign EndJoin enum values:
  *                           EndJoin.ROUND_END_JOIN <br />
  *                           EndJoin.MITER_END_JOIN <br />
  *                           EndJoin.BEVEL_END_JOIN <br />
  */
 pub.strokeJoin = function (join) {
-  // http://processing.org/reference/strokeJoin_.html
-  // http://jongware.mit.edu/idcs5/pc_ObjectStyle.html
-  // pub.ROUND = dot.endJoin = EndJoin.ROUND_END_JOIN;
-  // pub.MITER = dot.endJoin = EndJoin.MITER_END_JOIN;
-  // pub.BEVEL = dot.endJoin = EndJoin.BEVEL_END_JOIN;
-
-  if (typeof join === 'string') {
+  // work around to maintain one b.ROUND constant
+  join = (pub.ROUND) ? EndJoin.ROUND_END_JOIN : join;
+  if (typeof join === 'object') {
     currStrokeJoin = join;
   } else {
-    error("b.strokeJoin, not supported type. Please make sure the strokeJoin is a string");
+    error("b.strokeJoin, not supported type. Please make sure the strokeJoin is a valid constant");
   }
 };
 
