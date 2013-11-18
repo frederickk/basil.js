@@ -459,7 +459,9 @@ pub.controllers = function() {
    */
   var initList = function(properties) {
     return mergeArray( init(properties), {
-      items:      [],
+      items:      (properties.items != null)
+                    ? properties.items
+                    : [],
       alignment:  "center", /* default: "center" */
       value:      (properties.value != null)
                     ? properties.value

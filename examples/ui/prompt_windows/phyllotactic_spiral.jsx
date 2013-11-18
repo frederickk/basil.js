@@ -28,6 +28,14 @@ var dialog;
 function setup() {
 
   dialog = b.ui.palette( 'Phyllotactic Spiral' );
+
+  dialog.add('dropdown', 'drawModus', 'Circles', {
+    label: 'Dropdown',
+    items: ['Circles', 'Lines']
+  });
+
+  dialog.add('separator');
+
   dialog.add('slider', 'amount', 20, {
     label: 'Dot Count',
     valueLabel: true,
@@ -45,6 +53,10 @@ function setup() {
   });
 
   dialog.add('separator');
+
+  dialog.add('checkbox', 'bRandomColors', false, {
+    label: 'Randomize Color Swatch'
+  });
 
   b.layer('generated');
   b.canvasMode(b.PAGE);
@@ -67,10 +79,12 @@ function draw() {
     dialog.radius
   );
 
-  // fill with random color from swatch palette
-  b.items(spiral, function(item, i) {
-    item.fillColor = getRandomSwatch();
-  });
+  if( dialog.bRandomColors ) {
+    // fill with random color from swatch palette
+    b.items(spiral, function(item, i) {
+      item.fillColor = getRandomSwatch();
+    });
+  }
 
 };
 
