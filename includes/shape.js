@@ -46,6 +46,8 @@ if(w === 0 || h === 0)
   var newOval = ovals.add( currentLayer() );
   with (newOval) {
     strokeWeight = currStrokeWeight;
+    strokeCap = currStrokeCap;
+    strokeJoin = currStrokeJoin;
     strokeTint = currStrokeTint;
     fillColor = currFillColor;
     fillTint = currFillTint;
