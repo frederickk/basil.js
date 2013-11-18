@@ -45,7 +45,7 @@ var uiConfig = {
   chartData: {
     type: 'textfield',
     label: 'Values CSV - total must not exceed 100',
-    value: '2.77, 8.33, 9.72, 10.55, 12.5, 16.66, 20.83, 18.61',
+    value: '2.77, 8.33, 9.72, 10.55, 12.5, 16.66, 20.83, 18.64',
     length: 10
   }
 
