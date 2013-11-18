@@ -14,13 +14,13 @@
 var dialog;
 
 var uiConfig = {
-  width: {
+  v1: {
     type: 'textfield',
     label: 'Variable Eins',
     valueType: 'float',
     value: 0.0
   },
-  height: {
+  v2: {
     type: 'textfield',
     label: 'Variable Zwei',
     valueType: 'float',
