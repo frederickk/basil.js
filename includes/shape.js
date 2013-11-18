@@ -501,6 +501,89 @@ pub.strokeWeight = function (weight) {
 };
 
 /**
+ * Sets the end cap style of the stroke used for lines and the border
+ * around shapes.
+ *
+ * @cat Document
+ * @subcat Attributes
+ * @method strokeCap
+ * @param {String} cap The end cap of the stroke
+ * @param {String} side optional property when applying b.ARROWHEAD styles, b.STROKE_LEFT or b.STROKE_RIGHT
+ */
+pub.strokeCap = function (cap, side) {
+  // http://processing.org/reference/strokeCap_.html
+  // http://jongware.mit.edu/idcs5/pc_ObjectStyle.html
+  /* END CAPS */
+  // pub.ROUND   = dot.endCap = EndCap.BUTT_END_CAP;
+  // pub.SQUARE  = dot.endCap = EndCap.ROUND_END_CAP;
+  // pub.PROJECT = dot.endCap = EndCap.PROJECTING_END_CAP;
+
+  /* ARROW HEADS */
+  // pub.ARROWHEAD_SIMPLE = dot.leftLineEnd = ArrowHead.SIMPLE_ARROW_HEAD;
+  // pub.ARROWHEAD_SIMPLE_WIDE = dot.leftLineEnd = ArrowHead.SIMPLE_WIDE_ARROW_HEAD;
+  // pub.ARROWHEAD_TRIANGLE = dot.leftLineEnd = ArrowHead.TRIANGLE_ARROW_HEAD;
+  // pub.ARROWHEAD_TRIANGLE_WIDE = dot.leftLineEnd = ArrowHead.TRIANGLE_WIDE_ARROW_HEAD;
+  // pub.ARROWHEAD_BARBED = dot.leftLineEnd = ArrowHead.BARBED_ARROW_HEAD;
+  // pub.ARROWHEAD_CURVED = dot.leftLineEnd = ArrowHead.CURVED_ARROW_HEAD;
+  // pub.ARROWHEAD_CIRCLE = dot.leftLineEnd = ArrowHead.CIRCLE_ARROW_HEAD;
+  // pub.ARROWHEAD_CIRCLE_SOLID = dot.leftLineEnd = ArrowHead.CIRCLE_SOLID_ARROW_HEAD;
+  // pub.ARROWHEAD_SQUARE = dot.leftLineEnd = ArrowHead.SQUARE_ARROW_HEAD;
+  // pub.ARROWHEAD_SQUARE_SOLID = dot.leftLineEnd = ArrowHead.SQUARE_SOLID_ARROW_HEAD;
+  // pub.ARROWHEAD_BAR = dot.leftLineEnd = ArrowHead.BAR_ARROW_HEAD;
+  //
+  if (typeof cap === 'string') {
+    currStrokeCap = cap;
+  } else {
+    error("b.strokeCap, not supported type. Please make sure the strokeCap is a string");
+  }
+};
+
+/**
+ * Sets the connecting joint style of the stroke used for lines and the border
+ * around shapes.
+ *
+ * @cat Document
+ * @subcat Attributes
+ * @method strokeJoin
+ * @param {String} join The connecting joint of the stroke
+ */
+pub.strokeJoin = function (join) {
+  // http://processing.org/reference/strokeJoin_.html
+  // http://jongware.mit.edu/idcs5/pc_ObjectStyle.html
+  // pub.ROUND = dot.endJoin = EndJoin.ROUND_END_JOIN;
+  // pub.MITER = dot.endJoin = EndJoin.MITER_END_JOIN;
+  // pub.BEVEL = dot.endJoin = EndJoin.BEVEL_END_JOIN;
+
+  if (typeof join === 'string') {
+    currStrokeJoin = join;
+  } else {
+    error("b.strokeJoin, not supported type. Please make sure the strokeJoin is a string");
+  }
+};
+
+/**
+ * Sets the alignment of the stroke used for lines and the border
+ * around shapes.
+ *
+ * @cat Document
+ * @subcat Attributes
+ * @method strokeAlign
+ * @param {String} align The alignment of the stroke
+ */
+pub.strokeAlign = function (align) {
+  // http://jongware.mit.edu/idcs5/pc_ObjectStyle.html
+  // pub.CENTER  = dot.strokeAlignment = StrokeAlignment.CENTER_ALIGNMENT
+  // pub.INSIDE  = dot.strokeAlignment = StrokeAlignment.INSIDE_ALIGNMENT
+  // pub.OUTSIDE = dot.strokeAlignment = StrokeAlignment.OUTSIDE_ALIGNMENT
+
+  if (typeof align === 'string') {
+    currStrokeAlign = align;
+  } else {
+    error("b.strokeAlign, not supported type. Please make sure the strokeAlign is a string");
+  }
+};
+
+/**
  * Returns the object style with the given name. If the style does not exist it gets created.
  *
  * @cat Typography
