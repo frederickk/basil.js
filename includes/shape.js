@@ -47,6 +47,8 @@ if(w === 0 || h === 0)
   with (newOval) {
     strokeWeight = currStrokeWeight;
     endCap = currStrokeCap;
+    leftLineEnd = currStrokeLeftEnd;
+    rightLineEnd = currStrokeRightEnd;
     endJoin = currStrokeJoin;
     strokeTint = currStrokeTint;
     fillColor = currFillColor;
@@ -93,6 +95,8 @@ pub.line = function(x1, y1, x2, y2) {
   with (newLine) {
     strokeWeight = currStrokeWeight;
     endCap = currStrokeCap;
+    leftLineEnd = currStrokeLeftEnd;
+    rightLineEnd = currStrokeRightEnd;
     endJoin = currStrokeJoin;
     strokeTint = currStrokeTint;
     fillColor = currFillColor;
@@ -359,6 +363,8 @@ function addPolygon() {
   with (currPolygon) {
     strokeWeight = currStrokeWeight;
     endCap = currStrokeCap;
+    leftLineEnd = currStrokeLeftEnd;
+    rightLineEnd = currStrokeRightEnd;
     endJoin = currStrokeJoin;
     strokeTint = currStrokeTint;
     fillColor = currFillColor;
@@ -414,6 +420,8 @@ pub.rect = function(x, y, w, h){
     geometricBounds = rectBounds;
     strokeWeight = currStrokeWeight;
     endCap = currStrokeCap;
+    leftLineEnd = currStrokeLeftEnd;
+    rightLineEnd = currStrokeRightEnd;
     endJoin = currStrokeJoin;
     strokeTint = currStrokeTint;
     fillColor = currFillColor;
@@ -515,10 +523,11 @@ pub.strokeWeight = function (weight) {
  * @cat Document
  * @subcat Attributes
  * @method strokeCap
- * @param {Object} cap The end cap of the stroke. Must be one of the InDesign EndCap enum values:
- *                           EndCap.ROUND_END_CAP <br />
- *                           EndCap.BUTT_END_CAP <br />
- *                           EndCap.PROJECTING_END_CAP <br />
+ * @param {Object} cap The end cap of the stroke. The parameter must be written in "ALL CAPS." Supported values:
+ *                           b.ROUND <br />
+ *                           b.SQUARE<br />
+ *                           b.PROJECT <br />
+ *                           Or if an arrowhead cap is desired. Must be one of the InDesign ArrowHead enum values:
  *                           ArrowHead.SIMPLE_ARROW_HEAD <br />
  *                           ArrowHead.SIMPLE_WIDE_ARROW_HEAD <br />
  *                           ArrowHead.TRIANGLE_ARROW_HEAD <br />
@@ -530,34 +539,38 @@ pub.strokeWeight = function (weight) {
  *                           ArrowHead.SQUARE_ARROW_HEAD <br />
  *                           ArrowHead.SQUARE_SOLID_ARROW_HEAD <br />
  *                           ArrowHead.BAR_ARROW_HEAD <br />
- * @param {String} side optional property when applying b.ARROWHEAD styles, b.STROKE_LEFT or b.STROKE_RIGHT
+ * @param {String} side optional property when applying ArrowHead values styles, leave empty if both ends should have the same ArrowHead. The parameter must be written in "ALL CAPS." Supported values:
+ *                           b.LEFT <br />
+ *                           b.RIGHT <br />
  */
 pub.strokeCap = function (cap, side) {
-  // http://processing.org/reference/strokeCap_.html
-  // http://jongware.mit.edu/idcs5/pc_ObjectStyle.html
-  /* END CAPS */
-  // pub.ROUND   = dot.endCap = EndCap.BUTT_END_CAP;
-  // pub.SQUARE  = dot.endCap = EndCap.ROUND_END_CAP;
-  // pub.PROJECT = dot.endCap = EndCap.PROJECTING_END_CAP;
-
-  /* ARROW HEADS */
-  // pub.ARROWHEAD_SIMPLE = dot.leftLineEnd = ArrowHead.SIMPLE_ARROW_HEAD;
-  // pub.ARROWHEAD_SIMPLE_WIDE = dot.leftLineEnd = ArrowHead.SIMPLE_WIDE_ARROW_HEAD;
-  // pub.ARROWHEAD_TRIANGLE = dot.leftLineEnd = ArrowHead.TRIANGLE_ARROW_HEAD;
-  // pub.ARROWHEAD_TRIANGLE_WIDE = dot.leftLineEnd = ArrowHead.TRIANGLE_WIDE_ARROW_HEAD;
-  // pub.ARROWHEAD_BARBED = dot.leftLineEnd = ArrowHead.BARBED_ARROW_HEAD;
-  // pub.ARROWHEAD_CURVED = dot.leftLineEnd = ArrowHead.CURVED_ARROW_HEAD;
-  // pub.ARROWHEAD_CIRCLE = dot.leftLineEnd = ArrowHead.CIRCLE_ARROW_HEAD;
-  // pub.ARROWHEAD_CIRCLE_SOLID = dot.leftLineEnd = ArrowHead.CIRCLE_SOLID_ARROW_HEAD;
-  // pub.ARROWHEAD_SQUARE = dot.leftLineEnd = ArrowHead.SQUARE_ARROW_HEAD;
-  // pub.ARROWHEAD_SQUARE_SOLID = dot.leftLineEnd = ArrowHead.SQUARE_SOLID_ARROW_HEAD;
-  // pub.ARROWHEAD_BAR = dot.leftLineEnd = ArrowHead.BAR_ARROW_HEAD;
-  //
   if (typeof cap === 'object') {
-    currStrokeCap = cap;
+    if( cap === pub.ROUND || cap === pub.SQUARE || cap === pub.PROJECT ) {
+      currStrokeCap = cap;
+    }
+    else {
+      if( side === "left" || side === undefined ) {
+        currStrokeLeftEnd = cap;
+      }
+      if( side === "right" || side === undefined ) {
+        currStrokeRightEnd = cap;
+      }
+    }
   } else {
-    error("b.strokeCap, not supported type. Please make sure the strokeCap is a valid constant");
+    error("b.strokeCap, not supported type. Please make sure the strokeCap is a valid constant or InDesign enum");
   }
+};
+
+/**
+ * Disables drawing a stroke cap.
+ *
+ * @cat Attributes
+ * @method noStrokeCap
+ */
+pub.noStrokeCap = function () {
+  currStrokeCap = pub.SQUARE;
+  currStrokeLeftEnd = ArrowHead.NONE;
+  currStrokeRightEnd = ArrowHead.NONE;
 };
 
 /**
@@ -567,10 +580,10 @@ pub.strokeCap = function (cap, side) {
  * @cat Document
  * @subcat Attributes
  * @method strokeJoin
- * @param {Object} join The connecting joint of the stroke. Must be one of the InDesign EndJoin enum values:
- *                           EndJoin.ROUND_END_JOIN <br />
- *                           EndJoin.MITER_END_JOIN <br />
- *                           EndJoin.BEVEL_END_JOIN <br />
+ * @param {Object} join The connecting joint of the stroke. The parameter must be written in "ALL CAPS." Supported values:
+ *                           b.ROUND <br />
+ *                           b.MITER <br />
+ *                           b.BEVEL <br />
  */
 pub.strokeJoin = function (join) {
   // work around to maintain one b.ROUND constant

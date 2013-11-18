@@ -142,6 +142,22 @@ pub.SQUARE = EndCap.BUTT_END_CAP;
 pub.PROJECT = EndCap.PROJECTING_END_CAP;
 
 /**
+ * Project, used for strokeCap()
+ * @property LEFT {String}
+ * @cat Document
+ * @subcat Primitives
+ */
+pub.LEFT = "left";
+
+/**
+ * Project, used for strokeCap()
+ * @property RIGHT {String}
+ * @cat Document
+ * @subcat Primitives
+ */
+pub.RIGHT = "right";
+
+/**
  * Square, used for strokeJoin()
  * @property SQUARE {Object}
  * @cat Document
