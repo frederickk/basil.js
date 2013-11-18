@@ -18,13 +18,13 @@ var uiConfig = {
     type: 'textfield',
     label: 'Variable Eins',
     valueType: 'float',
-    value: 0.0
+    value: 100.0
   },
   v2: {
     type: 'textfield',
     label: 'Variable Zwei',
     valueType: 'float',
-    value: 1.0
+    value: 200.0
   }
 };
 

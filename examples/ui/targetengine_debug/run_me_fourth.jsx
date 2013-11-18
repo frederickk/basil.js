@@ -1,6 +1,6 @@
 //
-//  Einfaches Beispiel um eine UI Palette herzustellen.
-//  dem target engine Name 'basiljs'.
+//  Hier nutze ich noch mal den 'basiljs' target engine
+//  und kann die Variabeln von 'run_me_first.jsx' abrufen.
 //
 #targetengine 'basiljs'
 
@@ -11,7 +11,6 @@
 
 
 
-// nur als weiterer Beweis
 var newUiConfig = {
   v3: {
     type: 'textfield',
