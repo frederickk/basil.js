@@ -7,11 +7,13 @@ var init = function() {
   // -- init internal state vars --
   startTime = Date.now();
   currStrokeWeight = 1;
+  currStrokeCap = pub.SQUARE;
+  currStrokeJoin = pub.MITER;
   currStrokeTint = 100;
   currFillTint = 100;
   currCanvasMode = pub.PAGE;
   currColorMode = pub.RGB;
-};    
+};
 
 
 // ----------------------------------------
@@ -21,7 +23,7 @@ var init = function() {
  * Run the sketch! Has to be called in every sketch a the very end of the code.
  * You may add performance setting options when calling b.go():<br /><br />
  *
- * b.go(b.MODEVISIBLE) or alternatively: b.go()<br />   
+ * b.go(b.MODEVISIBLE) or alternatively: b.go()<br />
  * b.go(b.MODESILENT) <br />
  * b.go(b.MODEHIDDEN)<br /><br />
  *
@@ -49,7 +51,7 @@ pub.go = function (mode) {
   if (typeof glob.draw === 'function') {
     runDrawOnce();
   };
-  
+
   var executionDuration = pub.millis();
   if (executionDuration < 1000) {
     println("[Finished in " + executionDuration + "ms]");
@@ -198,7 +200,7 @@ var setCurrDoc = function(doc) {
   resetCurrDoc();
   currDoc = doc;
   // -- setup document --
-  
+
   currDoc.pasteboardPreferences.pasteboardMargins = ["1000pt", "1000pt"];
   currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
   currFont = currDoc.textDefaults.appliedFont.name;
@@ -322,7 +324,7 @@ var updatePublicPageSizeVars = function () {
       heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
       b.resetMatrix();
       b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
-      
+
       if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND){
         b.resetMatrix();
         b.translate( 0, -b.doc().documentPreferences.documentBleedTopOffset );
@@ -334,9 +336,9 @@ var updatePublicPageSizeVars = function () {
       widthOffset = 0;
       heightOffset = 0;
       b.resetMatrix();
-      
+
       var w = pageBounds[3] - pageBounds[1] + widthOffset;
-      var h = pageBounds[2] - pageBounds[0] + heightOffset;    
+      var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
       pub.width = w * 2;
 
@@ -345,10 +347,10 @@ var updatePublicPageSizeVars = function () {
       } else if (currentPage().side === PageSideOptions.RIGHT_HAND){
         pub.translate(-w,0);
       }
-       
-      
+
+
       pub.height = h;
-      break; 
+      break;
 
     case pub.FACING_BLEEDS:
       widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
@@ -357,7 +359,7 @@ var updatePublicPageSizeVars = function () {
       b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
 
       var w = pageBounds[3] - pageBounds[1] + widthOffset / 2;
-      var h = pageBounds[2] - pageBounds[0] + heightOffset;    
+      var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
       pub.width = w * 2;
       pub.height = h;
@@ -375,7 +377,7 @@ var updatePublicPageSizeVars = function () {
       b.translate( currentPage().marginPreferences.left, currentPage().marginPreferences.top );
 
       var w = pageBounds[3] - pageBounds[1] - widthOffset / 2;
-      var h = pageBounds[2] - pageBounds[0] - heightOffset;    
+      var h = pageBounds[2] - pageBounds[0] - heightOffset;
 
       pub.width = w * 2;
       pub.height = h;
@@ -384,7 +386,7 @@ var updatePublicPageSizeVars = function () {
         pub.translate(-w-widthOffset/2,0);
       }
 
-      return; // early exit    
+      return; // early exit
 
     default:
       b.error("b.canvasMode(), basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAGE, b.MARGIN, b.BLEED, b.FACING_PAGES, b.FACING_MARGINS, b.FACING_BLEEDS");
@@ -393,7 +395,7 @@ var updatePublicPageSizeVars = function () {
 
   if(singlePageMode){
     var w = pageBounds[3] - pageBounds[1] + widthOffset;
-    var h = pageBounds[2] - pageBounds[0] + heightOffset;    
+    var h = pageBounds[2] - pageBounds[0] + heightOffset;
 
     pub.width = w;
     pub.height = h;
@@ -406,7 +408,7 @@ var findInCollectionByName = function(collection, name) {
 /*  var found = collection.itemByName(name);
   if (!found || !found.isValid) return null;
   return found;*/
-  
+
    var found = null;
    for (var i = 0; i < collection.length; i++) {
      if (collection[i].name === name) return collection[i];

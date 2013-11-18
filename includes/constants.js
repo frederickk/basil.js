@@ -118,6 +118,30 @@ pub.CHORD = "chord";
 pub.PIE = "pie";
 
 /**
+ * Round, used for strokeCap()
+ * @property ROUND {String}
+ * @cat Document
+ * @subcat Primitives
+ */
+pub.ROUND = EndCap.ROUND_END_CAP;
+
+/**
+ * Square, used for strokeCap()
+ * @property SQUARE {String}
+ * @cat Document
+ * @subcat Primitives
+ */
+pub.SQUARE = EndCap.BUTT_END_CAP;
+
+/**
+ * Project, used for strokeCap()
+ * @property PROJECT {String}
+ * @cat Document
+ * @subcat Primitives
+ */
+pub.PROJECT = EndCap.PROJECTING_END_CAP;
+
+/**
  * Two Pi
  * @property TWO_PI {Number}
  * @cat Math

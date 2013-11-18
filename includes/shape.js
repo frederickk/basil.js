@@ -507,7 +507,21 @@ pub.strokeWeight = function (weight) {
  * @cat Document
  * @subcat Attributes
  * @method strokeCap
- * @param {String} cap The end cap of the stroke
+ * @param {String} cap The end cap of the stroke. Must be one of the InDesign Justification enum values:
+ *                           EndCap.ROUND_END_CAP <br />
+ *                           EndCap.BUTT_END_CAP <br />
+ *                           EndCap.PROJECTING_END_CAP <br />
+ *                           ArrowHead.SIMPLE_ARROW_HEAD <br />
+ *                           ArrowHead.SIMPLE_WIDE_ARROW_HEAD <br />
+ *                           ArrowHead.TRIANGLE_ARROW_HEAD <br />
+ *                           ArrowHead.TRIANGLE_WIDE_ARROW_HEAD <br />
+ *                           ArrowHead.BARBED_ARROW_HEAD <br />
+ *                           ArrowHead.CURVED_ARROW_HEAD <br />
+ *                           ArrowHead.CIRCLE_ARROW_HEAD <br />
+ *                           ArrowHead.CIRCLE_SOLID_ARROW_HEAD <br />
+ *                           ArrowHead.SQUARE_ARROW_HEAD <br />
+ *                           ArrowHead.SQUARE_SOLID_ARROW_HEAD <br />
+ *                           ArrowHead.BAR_ARROW_HEAD <br />
  * @param {String} side optional property when applying b.ARROWHEAD styles, b.STROKE_LEFT or b.STROKE_RIGHT
  */
 pub.strokeCap = function (cap, side) {
@@ -545,7 +559,10 @@ pub.strokeCap = function (cap, side) {
  * @cat Document
  * @subcat Attributes
  * @method strokeJoin
- * @param {String} join The connecting joint of the stroke
+ * @param {String} join The connecting joint of the stroke.  Must be one of the InDesign Justification enum values:
+ *                           EndJoin.ROUND_END_JOIN <br />
+ *                           EndJoin.MITER_END_JOIN <br />
+ *                           EndJoin.BEVEL_END_JOIN <br />
  */
 pub.strokeJoin = function (join) {
   // http://processing.org/reference/strokeJoin_.html
