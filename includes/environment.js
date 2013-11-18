@@ -56,10 +56,10 @@ pub.canvasMode = function ( m ) {
     error("b.canvasMode(), there is a problem setting the canvasMode. Please check the reference for details.");
   }
 
-};
+};  
 
 /**
- * Returns the current page and sets it if argument page is given. Numbering starts with 1.
+ * Returns the current page and sets it if argument page is given. Numbering starts with 1. 
  *
  * @cat Document
  * @subcat Page
@@ -106,22 +106,22 @@ pub.page = function(page) {
 pub.addPage = function(location) {
 
   if(arguments.length === 0) location = b.AT_END; // default
-
+  
   var nP;
   try {
-
+    
     switch ( location ) {
-
+      
       case b.AT_END:
         nP = currentDoc().pages.add(location);
         break;
 
       case b.AT_BEGINNING:
-        nP = currentDoc().pages.add(location);
+        nP = currentDoc().pages.add(location);     
         break;
 
       case b.AFTER:
-        nP = currentDoc().pages.add(location, pub.page() );
+        nP = currentDoc().pages.add(location, pub.page() ); 
         break;
 
       case b.BEFORE:
@@ -129,12 +129,12 @@ pub.addPage = function(location) {
         break;
 
       default:
-        throw new Error();
+        throw new Error(); 
         break;
 
     };
 
-    pub.page( nP );
+    pub.page( nP ); 
     return nP;
 
   } catch (e) {
@@ -185,42 +185,16 @@ pub.pageNumber = function (pageObj) {
 
 };
 
-/**
- * Returns and sets view to the next page relevant to the current page
- *
- * @cat Document
- * @subcat Page
- * @method nextPage
- * @return {Number} The page number within the document.
- */
+// TODO: does not work?
 pub.nextPage = function () {
-  var index = currentPage().documentOffset;
-  if( index+1 < currentDoc().pages.length ) {
-    var p = currentDoc().pages.item( index+1 );
+    var p = pub.doc().pages.nextItem(currentPage());
     return pub.page(p);
-  }
-  else {
-    error("b.nextPage(), at the end of document try b.page(0) or b.previousPage() instead" );
-  }
 };
 
-/**
- * Returns and sets view to the previous page relevant to the current page
- *
- * @cat Document
- * @subcat Page
- * @method previousPage
- * @return {Number} The page number within the document.
- */
+// TODO: does not work?
 pub.previousPage = function () {
-  var index = currentPage().documentOffset;
-  if( index-1 >= 0 ) {
-    var p = currentDoc().pages.item( index-1 );
+    var p = pub.doc().pages.previousItem(currentPage());
     return pub.page(p);
-  }
-  else {
-    error("b.previousPage(), at the beginning of document try b.page(b.pageCount()) or b.nextPage() instead" );
-  }
 };
 
 /**
@@ -233,42 +207,6 @@ pub.previousPage = function () {
  */
 pub.pageCount = function() {
   return currentDoc().pages.count();
-};
-
-// TODO: add Spread support
-pub.spread = function(page) {
-};
-
-// TODO: add Spread support
-pub.addSpread = function(location) {
-};
-
-// TODO: add Spread support
-pub.removeSpread = function (page) {
-};
-
-// TODO: add Spread support
-pub.spreadNumber = function (pageObj) {
-};
-
-// TODO: add Spread support
-pub.nextSpread = function () {
-};
-
-// TODO: add Spread support
-pub.previousSpread = function () {
-};
-
-/**
- * The number of all spreads in the current document.
- *
- * @cat Document
- * @subcat Page
- * @method spreadCount
- * @return The amount of spreads.
- */
-pub.spreadCount = function() {
-  return currentDoc().spreads.count();
 };
 
 /**
@@ -389,21 +327,6 @@ pub.group = function (pItem, name) {
     error("b.group(), not a valid argument.")
   }
 
-  // TODO: make groups respect b.ellipseMode and b.rectMode
-  // this is kinda sorta, not really working
-  // if (currEllipseMode === pub.CENTER || currRectMode === pub.CENTER) {
-  //   b.itemPosition( group,
-  //     currMatrix.adobeMatrix()[4] - b.itemWidth(group)/2,
-  //     currMatrix.adobeMatrix()[5] - b.itemHeight(group)/2
-  //   );
-  // }
-  // else {
-  //   b.itemPosition( group,
-  //     currMatrix.adobeMatrix()[4],
-  //     currMatrix.adobeMatrix()[5]
-  //   );
-  // }
-
   return group;
 };
 
@@ -471,13 +394,13 @@ pub.labels = function(label, cb) {
  * @method label
  * @param  {String} label The label identifier
  * @return {PageItem} The first PageItem of all the hits
- */
+ */  
 pub.label = function(label) {
   var doc = currentDoc();
   for (var i = 0, len = doc.pageItems.length; i < len; i++) {
     var pageItem = doc.pageItems[i];
     if (pageItem.label === label) {
-      return pageItem;
+      return pageItem;  
     }
   }
   b.error("b.label(), no item found with the given label '" + label + "'. Check for line breaks and whitespaces in the script label panel.");
@@ -494,7 +417,7 @@ pub.label = function(label) {
 pub.selection = function() {
   if(app.selection.length === 0) error("b.selection(), selection is empty. Please select something.");
   return app.selection[0];
-};
+}; 
 
 /**
  * Returns the currently selected object(s)
@@ -509,7 +432,7 @@ pub.selections = function(cb) {
   if(app.selection.length === 0) error("b.selections(), selection is empty. Please select something.");
   if (arguments.length === 1 && cb instanceof Function) {
     return forEach(app.selection, cb);
-  }
+  } 
   return app.selection;
 };
 
@@ -617,7 +540,7 @@ pub.guideY = function (y) {
 };
 
 /**
- * Sets the margins of a given page. If 1 value is given, all 4 sides are set equally. If 4 values are given, the current page will be adjusted. Adding a 5th value will set the margin of a given page. Calling the function without any values, will return the margins for the current page.
+ * Sets the margins of a given page. If 1 value is given, all 4 sides are set equally. If 4 values are given, the current page will be adjusted. Adding a 5th value will set the margin of a given page. Calling the function without any values, will return the margins for the current page. 
  *
  * @cat Document
  * @subcat Page
@@ -632,13 +555,13 @@ pub.guideY = function (y) {
 pub.margins = function(top, right, bottom, left, pageNumber) {
 
   if (arguments.length === 0){
-
+    
     return {'top':pub.page(pageNumber).marginPreferences.top,
             'right':pub.page(pageNumber).marginPreferences.right,
             'bottom':pub.page(pageNumber).marginPreferences.bottom,
             'left':pub.page(pageNumber).marginPreferences.left
             };
-
+    
   } else if (arguments.length === 1) {
     right = bottom = left = top;
     }
@@ -657,7 +580,7 @@ pub.margins = function(top, right, bottom, left, pageNumber) {
   };
 
 /**
- * Sets the document bleeds. If one value is given, all 4 are set equally. If 4 values are given, the top/right/bottom/left document bleeds will be adjusted. Calling the function without any values, will return the document bleed settings.
+ * Sets the document bleeds. If one value is given, all 4 are set equally. If 4 values are given, the top/right/bottom/left document bleeds will be adjusted. Calling the function without any values, will return the document bleed settings. 
  *
  * @cat Document
  * @subcat Page
@@ -675,7 +598,7 @@ pub.bleeds = function(top, right, bottom, left) {
             'bottom':currentDoc().documentPreferences.documentBleedBottomOffset,
             'left':currentDoc().documentPreferences.documentBleedInsideOrLeftOffset
             };
-
+            
 } else if (arguments.length === 1) {
   right = bottom = left = top;
   }else{
@@ -687,3 +610,194 @@ pub.bleeds = function(top, right, bottom, left) {
   currentDoc().documentPreferences.documentBleedBottomOffset = bottom;
   currentDoc().documentPreferences.documentBleedInsideOrLeftOffset = left;
 };
+
+
+/**
+ * Prints out all properties and values off an object in a recursive manner to the console. Useful for inspecting (or debugging) nested variable. the default value for the recursion is maxlevel = 2.
+ *
+ * @cat Output
+ * @method inspect
+ * @param  {Object} obj : the Object to inspect
+ * @param  {Number} maxlevel Optional: recursion limit, default maxlevel = 2
+ */
+pub.inspect = function(obj, maxlevel, level, propname) {
+  if (!level) level = 0;
+  if (!maxlevel) maxlevel = 2;
+  if (level > maxlevel) return;
+
+  var constructorName = obj.constructor.name;
+
+  var indent = "";
+  for (var i = 0; i < level; i++) indent = indent + "\t";
+
+  if (level === 0) {
+    println(obj);
+  } else {
+    if (constructorName === "Boolean" ||
+        constructorName === "Number" ||
+        constructorName === "String") {
+      println(indent+propname+": "+obj);
+    }
+    else if (constructorName === "Array") {
+      println(indent+propname+": "+constructorName+"("+obj.length+")");
+    }
+    else if (constructorName === "Color") {
+      println(indent+propname+": ["+obj.colorValue+"] "+constructorName);
+    } 
+    else {
+      println(indent+propname+": "+constructorName);
+    }
+  }
+
+  if ( constructorName === 'Array' ) {
+    for (var i = 0, len = obj.length; i < len; i++) {
+      pub.inspect(obj[i], maxlevel, level+1, i);
+    };
+  } else if (typeof obj === 'object') {
+    try {
+      for (var i in obj){
+        if (obj.hasOwnProperty(i)) {
+          pub.inspect(obj[i], maxlevel, level+1, i);
+        }
+      }
+    }
+    catch(e) {
+      println(indent+"--> "+propname+" "+e);
+    }
+  }
+}; 
+
+
+// ----------------------------------------
+// Date
+
+/**
+ * The year() function returns the current year as an integer (2012, 2013 etc).
+ * 
+ * @cat Environment
+ * @subcat Date
+ * @method year
+ * @return {Number}
+ */
+pub.year = function() {
+  return (new Date()).getFullYear();
+};
+
+/**
+ * The month() function returns the current month as a value from 1 - 12.
+ * 
+ * @cat Environment
+ * @subcat Date
+ * @method month
+ * @return {Number}
+ */
+pub.month = function() {
+  return (new Date()).getMonth() + 1;
+};
+
+/**
+ * The day() function returns the current day as a value from 1 - 31.
+ * 
+ * @cat Environment
+ * @subcat Date
+ * @method day
+ * @return {Number}
+ */
+pub.day = function() {
+  return (new Date()).getDate();
+};
+
+/**
+ * The weekday() function returns the current weekday as a string from Sunday, Monday, Tuesday...
+ * 
+ * @cat Environment
+ * @subcat Date
+ * @method weekday
+ * @return {String}
+ */
+pub.weekday = function() {
+  var weekdays = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+  return weekdays[(new Date()).getDay()];
+};
+
+/**
+ * The hour() function returns the current hour as a value from 0 - 23.
+ * 
+ * @cat Environment
+ * @subcat Date
+ * @method hour
+ * @return {Number}
+ */
+pub.hour = function() {
+  return (new Date()).getHours();
+};
+
+/**
+ * The minute() function returns the current minute as a value from 0 - 59.
+ * 
+ * @cat Environment
+ * @subcat Date
+ * @method minute
+ * @return {Number}
+ */
+pub.minute = function() {
+  return (new Date()).getMinutes();
+};
+
+/**
+ * The second() function returns the current second as a value from 0 - 59.
+ * 
+ * @cat Environment
+ * @subcat Date
+ * @method second
+ * @return {Number}
+ */
+pub.second = function() {
+  return (new Date()).getSeconds();
+};
+
+/**
+ * Returns the number of milliseconds (thousandths of a second) since starting an applet.
+ * 
+ * @cat Environment
+ * @subcat Date
+ * @method millis
+ * @return {Number}
+ */
+pub.millis = function() {
+  return Date.now() - startTime;
+};
+
+/**
+ * The millisecond() function differs from millis(), in that it returns the exact millisecond (thousandths of a second) of the current time.
+ * 
+ * @cat Environment
+ * @subcat Date
+ * @method millisecond
+ * @return {Number}
+ */
+pub.millisecond = function() {
+  return (new Date()).getMilliseconds();
+};
+
+/**
+ * The timestamp() function returns the current date formatted as YYYYMMDD_HHMMSS for useful unique filenaming.
+ * 
+ * @cat Environment
+ * @subcat Date
+ * @method timestamp
+ * @return {String}
+ */
+pub.timestamp = function() {
+  var dt = new Date();
+  var dtf = dt.getFullYear();
+  dtf += pub.nf(dt.getMonth()+1,2);
+  dtf += pub.nf(dt.getDate(),2);
+  dtf += "_";
+  dtf += pub.nf(dt.getHours(),2);
+  dtf += pub.nf(dt.getMinutes(),2);
+  dtf += pub.nf(dt.getSeconds(),2);
+  return dtf;
+};
+
+

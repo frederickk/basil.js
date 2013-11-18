@@ -32,26 +32,29 @@ var init = function() {
  */
 pub.go = function (mode) {
   if (!mode) {
-    mode = b.DEFAULTMODE;
+    mode = pub.DEFAULTMODE;
   }
-  app.scriptPreferences.enableRedraw = (mode == b.MODEVISIBLE);
+  app.scriptPreferences.enableRedraw = (mode == pub.MODEVISIBLE || mode == pub.MODEHIDDEN);
   app.preflightOptions.preflightOff = true;
 
-  try {
-    currentDoc(mode);
-    if (mode == b.MODEHIDDEN || mode == b.MODESILENT)
-      progressPanel = new Progress();
-    runSetup();
-    runDrawOnce();
-    var executionDuration = pub.millis();
-    if (executionDuration < 1000) {
-      println("[Finished in " + executionDuration + "ms]");
-    } else {
-      println("[Finished in " + (executionDuration/1000).toPrecision(3) + "s]");
-    }
+  currentDoc(mode);
+  if (mode == pub.MODEHIDDEN || mode == pub.MODESILENT) {
+    progressPanel = new Progress();
+  }
 
-  } catch (e) { // exception not caught individually
-      alert(e); // make verbose
+  if (typeof glob.setup === 'function') {
+    runSetup();
+  };
+
+  if (typeof glob.draw === 'function') {
+    runDrawOnce();
+  };
+
+  var executionDuration = pub.millis();
+  if (executionDuration < 1000) {
+    println("[Finished in " + executionDuration + "ms]");
+  } else {
+    println("[Finished in " + (executionDuration/1000).toPrecision(3) + "s]");
   }
 
   if(currDoc && !currDoc.windows.length) {
@@ -127,7 +130,7 @@ var runSetup = function() {
     if (typeof glob.setup === 'function') {
       glob.setup();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.FAST_ENTIRE_SCRIPT);
+  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
 };
 
 var runDrawOnce = function() {
@@ -135,7 +138,7 @@ var runDrawOnce = function() {
     if (typeof glob.draw === 'function') {
       glob.draw();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.FAST_ENTIRE_SCRIPT);
+  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
 };
 
 var runDrawLoop = function() {
@@ -143,7 +146,7 @@ var runDrawLoop = function() {
     if (typeof glob.draw === 'function') {
       glob.draw();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.fastEntireScript);
+  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
 };
 
 var welcome = function() {
@@ -164,7 +167,8 @@ var currentDoc = function (mode) {
       doc = app.activeDocument;
       if (mode == b.MODEHIDDEN) {
         if (doc.modified) {
-          throw ("To run in MODEHIDDEN save your active doc before processing.");
+          doc.save();
+          warning("Document was unsaved and has now been saved to your hard drive in order to enter MODEHIDDEN.");
         }
         var docPath = doc.fullName;
         doc.close(); // Close the doc and reopen it without adding to the display list
@@ -195,6 +199,7 @@ var setCurrDoc = function(doc) {
   currDoc = doc;
   // -- setup document --
 
+  currDoc.pasteboardPreferences.pasteboardMargins = ["1000pt", "1000pt"];
   currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
   currFont = currDoc.textDefaults.appliedFont.name;
   currFontSize = currDoc.textDefaults.pointSize;
