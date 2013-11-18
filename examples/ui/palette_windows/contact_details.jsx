@@ -1,7 +1,7 @@
 /**
  *
  * Contact Details
- * Prompt Interface Window Example
+ * Palette Interface Window Example
  *
  */
 

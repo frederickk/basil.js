@@ -6,25 +6,8 @@
 
 var dialog;
 
-// var uiConfig = {
-//   theButton: {
-//     type: 'button',
-//     label: 'Button',
-//     value: 'Click Me!',
-//     onClick: function(value) {
-//       b.println( 'My Button was clicked ' + value + ' time(s)' );
-//     }
-//   }
-// };
-
-
 
 function setup() {
-
-  // dialog = new b.ui.palette(
-  //   'Button Example',
-  //   uiConfig
-  // );
 
   dialog = new b.ui.dialog( b.PALETTE, 'Button Example' );
   dialog.add('button', 'theButton', 'ClickMe!', {
@@ -34,16 +17,6 @@ function setup() {
     }
   });
 
-};
-
-
-
-function draw() {
-};
-
-
-
-function update() {
 };
 
 
