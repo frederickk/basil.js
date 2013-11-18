@@ -16,22 +16,22 @@ var dialog;
 var uiConfig = {
   width: {
     type: 'textfield',
-    label: 'Variable Eins',
+    label: 'Variable Drei',
     valueType: 'float',
-    value: 0.0
+    value: 2.0
   },
   height: {
     type: 'textfield',
-    label: 'Variable Zwei',
+    label: 'Variable Vier',
     valueType: 'float',
-    value: 1.0
+    value: 3.0
   }
 };
 
 
 
 function setup() {
-  dialog = new b.ui.palette( 'targetengine_debug_1', uiConfig );
+  dialog = new b.ui.palette( 'targetengine_debug_4', uiConfig );
 };
 
 
