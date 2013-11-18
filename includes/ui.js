@@ -8,6 +8,7 @@
  *  / components are not respecting width: "full" (partially fixed)
  *  - fix independent label bug
  *  - major bug with prompts, need to support .add()
+ *  - fix redraw() 2x bug
  *
  *  ROADMAP:
  *  / implement missing/additional controllers
@@ -762,7 +763,6 @@ pub.controllers = function() {
    */
   function Slider(name, container, properties) {
     properties = initRange(properties);
-    b.inspect( properties );
 
     var group = container.add("group");
     group.orientation = "row";

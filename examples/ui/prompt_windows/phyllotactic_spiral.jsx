@@ -31,16 +31,20 @@ function setup() {
   dialog.add('slider', 'amount', 20, {
     label: 'Dot Count',
     valueLabel: true,
+    valueType: 'int',
     range: [10, 100]
   });
   dialog.add('slider', 'spacing', 100, {
     label: 'Dot Spacing',
     valueLabel: true,
+    valueType: 'int',
     range: [10, 250]
   });
   dialog.add('textfield', 'radius', -1, {
     label: 'Dot Radius (-1 == auto)',
   });
+
+  dialog.add('separator');
 
   b.layer('generated');
   b.canvasMode(b.PAGE);
@@ -52,7 +56,7 @@ function setup() {
 function draw() {
 
   b.noStroke();
-  b.fill(0,0,0);
+  b.fill( 'Black' );
 
   // draw some spirals
   var spiral = new Phyllotactic(
@@ -63,10 +67,10 @@ function draw() {
     dialog.radius
   );
 
-  // $.writeln( spiral.length );
-  // b.items(spiral, function(item, i) {
-  //   item.fillColor = b.color( Math.random(),Math.random(),Math.random() );
-  // });
+  // fill with random color from swatch palette
+  b.items(spiral, function(item, i) {
+    item.fillColor = getRandomSwatch();
+  });
 
 };
 
@@ -130,6 +134,12 @@ var Phyllotactic = function(cx, cy, amount, spacing, radius) {
   return b.group(dots, 'phyllotactic');
 };
 
+var getRandomSwatch = function(start) {
+  start = 4 || start;
+  return b.color(
+    b.doc().swatches.everyItem().name.unique()[ parseInt(b.random(start,b.doc().swatches.length)) ]
+  );
+};
 
 
 b.go();

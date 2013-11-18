@@ -11,7 +11,7 @@ var dialog;
 function setup() {
 
   dialog = new b.ui.dialog( b.PALETTE, 'Checkbox Example' );
-  dialog.add('checkbox', 'theCheckbox', 100, {
+  dialog.add('checkbox', 'theCheckbox', true, {
     label: 'Checkbox',
     onChange: function(value) {
       b.println( 'My Checkbox has changed ' + value );

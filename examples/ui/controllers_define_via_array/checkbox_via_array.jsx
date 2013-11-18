@@ -10,7 +10,7 @@ var uiConfig = {
   theCheckbox: {
     type: 'checkbox',
     label: 'Checkbox',
-    value: 100,
+    value: true,
     onChange: function(value) {
       b.println( 'My Checkbox has changed ' + value );
     }
