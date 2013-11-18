@@ -3,9 +3,9 @@
 
 /*
  *  TODO(S):
- *  / fully clear variables within #targetengine, this is a major bug! (partially fixed)
+ *  - fully clear variables within #targetengine, this is a major bug!
  *  / improve standard layout appearance, i.e. ensure labels are aligned on right side (partially fixed)
- *  - components are not respecting width: "full"
+ *  / components are not respecting width: "full" (partially fixed)
  *  - fix independent label bug
  *  - major bug with prompts, need support .add()
  *
@@ -69,7 +69,7 @@ pub.ui = {
     controllerList = (controllerList != undefined) ? controllerList : {};
 
     var base = function() {
-      win = uiProperties.win = new Window("palette", name.toString(), undefined, undefined);
+      win = uiProperties.win = new Window(type, name.toString(), undefined, undefined);
       win.orientation = "row";
       // win.alignChildren = "fill";
 
@@ -110,6 +110,8 @@ pub.ui = {
         uiProperties.update();
       });
 
+      // ok and cancel buttons
+      // prompt
       if( type === "dialog" || type === "prompt" ) {
         var buttongroup = mainGroup.add("group");
         buttongroup.alignment = "right";
@@ -125,7 +127,7 @@ pub.ui = {
         ok.onClick = function() {
           win.close(1);
           runDrawOnce();
-          runUpdateOnce();
+          if (typeof update === "function") update();
         };
       }
 
@@ -529,7 +531,7 @@ pub.controllers = function() {
       properties.onClick(clickCount);
       properties.onChange(clickCount);
       properties.onChanging(clickCount);
-      runUpdateOnce();
+      if (typeof update === "function") update();
 
       return clickCount;
     };
@@ -561,10 +563,7 @@ pub.controllers = function() {
       label: properties.label
     });
 
-    var check = group.add("checkbox", undefined, "", properties ); /*{
-      name: name,
-      width: properties.width
-    });*/
+    var check = group.add("checkbox", undefined, "", properties );
     check.value = properties.value;
 
     check.onClick = function() {
@@ -575,7 +574,7 @@ pub.controllers = function() {
       uiProperties.update();
 
       properties.onChange(value);
-      runUpdateOnce();
+      if (typeof update === "function") update();
 
       return value;
     };
@@ -690,11 +689,7 @@ pub.controllers = function() {
       });
     }
 
-    var text = group.add("edittext", undefined, properties.value, properties ); /*{
-      name: name,
-      multiline: properties.multiline,
-      width: properties.width
-    }); */
+    var text = group.add("edittext", undefined, properties.value, properties );
     text.characters = (properties.length != undefined)
       ? properties.length
       : (properties.multiline && properties.length != undefined)
@@ -726,7 +721,7 @@ pub.controllers = function() {
       uiProperties.update();
 
       properties.onChange(value);
-      runUpdateOnce();
+      if (typeof update === "function") update();
 
       return value;
     });
@@ -736,7 +731,7 @@ pub.controllers = function() {
       uiProperties.update();
 
       properties.onChanging(value);
-      runUpdateOnce();
+      if (typeof update === "function") update();
 
       return value;
     };
@@ -784,10 +779,7 @@ pub.controllers = function() {
     var slider = group.add("slider", undefined,
       properties.value,
       properties.min,
-      properties.max, properties ); /*{
-        name: name,
-        width: properties.width
-    }); */
+      properties.max, properties );
     slider.preferredSize = [properties.width, properties.height];
 
     var valueLabel = null;
@@ -819,7 +811,7 @@ pub.controllers = function() {
       uiProperties.update();
 
       properties.onChange(value);
-      runUpdateOnce();
+      if (typeof update === "function") update();
 
       return value;
     };
@@ -830,7 +822,7 @@ pub.controllers = function() {
 
       properties.onChanging(value);
       valueLabel.text = value;
-      runUpdateOnce();
+      if (typeof update === "function") update();
 
       return value;
     };
@@ -875,7 +867,7 @@ pub.controllers = function() {
       uiProperties.update();
 
       properties.onClick(value);
-      runUpdateOnce();
+      if (typeof update === "function") update();
 
       return value;
     };
@@ -885,7 +877,7 @@ pub.controllers = function() {
       uiProperties.update();
 
       properties.onChange(value);
-      runUpdateOnce();
+      if (typeof update === "function") update();
 
       return value;
     };
@@ -915,10 +907,7 @@ pub.controllers = function() {
       ? properties.width
       : "full";
 
-    var separator = group.add("panel", undefined, undefined, properties ); /*{
-      name: name,
-      width: properties.width
-    });*/
+    var separator = group.add("panel", undefined, undefined, properties );
     separator.preferredSize.height = separator.maximumSize.height = 1;
     separator.preferredSize.width = separator.maximumSize.width = (properties.width != "full")
       ? properties.width
