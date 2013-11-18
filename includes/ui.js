@@ -961,24 +961,3 @@ if (!Array.prototype.findIndex) {
     return i;
   };
 }
-
-function printProperties(obj) {
-  $.writeln("------------------");
-  $.writeln(obj.reflect.name);
-  $.writeln("\rProperties");
-  $.writeln("------------------");
-  var props = obj.reflect.properties;
-  var array = [];
-  for( var i=0; i<props.length; i++ ) {
-    try {
-      array.push( props[i].name + ":\t\t" + obj[props[i].name] );
-    }
-    catch(err) {}
-    array.sort();
-    // $.writeln( array.join ("\r") );
-  }
-  for( var i=0; i<array.length; i++ ) {
-    $.writeln( array[i] );
-  }
-};
-
