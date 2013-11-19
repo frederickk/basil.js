@@ -204,10 +204,23 @@ pub.nextPage = function () {
   }
 };
 
-// TODO: does not work?
+/**
+ * Returns and sets view to the previous page relevant to the current page
+ *
+ * @cat Document
+ * @subcat Page
+ * @method previousPage
+ * @return {Number} The page number within the document.
+ */
 pub.previousPage = function () {
-    var p = pub.doc().pages.previousItem(currentPage());
+  var index = currentPage().documentOffset;
+  if( index-1 >= 0 ) {
+    var p = currentDoc().pages.item( index-1 );
     return pub.page(p);
+  }
+  else {
+    error("b.previousPage(), at the beginning of document try b.page(b.pageCount()) or b.nextPage() instead" );
+  }
 };
 
 /**
