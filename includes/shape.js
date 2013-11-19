@@ -586,7 +586,7 @@ pub.noStrokeCap = function () {
  *                           b.BEVEL <br />
  */
 pub.strokeJoin = function (join) {
-  // work around to maintain one b.ROUND constant
+  // work around to maintain a single b.ROUND constant
   join = (pub.ROUND) ? EndJoin.ROUND_END_JOIN : join;
   if (typeof join === 'object') {
     currStrokeJoin = join;
@@ -595,27 +595,30 @@ pub.strokeJoin = function (join) {
   }
 };
 
-/**
- * Sets the alignment of the stroke used for lines and the border
- * around shapes.
- *
- * @cat Document
- * @subcat Attributes
- * @method strokeAlign
- * @param {String} align The alignment of the stroke
- */
-pub.strokeAlign = function (align) {
-  // http://jongware.mit.edu/idcs5/pc_ObjectStyle.html
-  // pub.CENTER  = dot.strokeAlignment = StrokeAlignment.CENTER_ALIGNMENT
-  // pub.INSIDE  = dot.strokeAlignment = StrokeAlignment.INSIDE_ALIGNMENT
-  // pub.OUTSIDE = dot.strokeAlignment = StrokeAlignment.OUTSIDE_ALIGNMENT
+// TODO
+// /**
+//  * Sets the alignment of the stroke used for lines and the border
+//  * around shapes.
+//  *
+//  * @cat Document
+//  * @subcat Attributes
+//  * @method strokeAlign
+//  * @param {String} align The alignment of the stroke. The parameter must be written in "ALL CAPS." Supported values:
+//  *                           b.CENTER <br />
+//  *                           b.INSIDE <br />
+//  *                           b.OUTSIDE <br />
+//  */
+// pub.strokeAlign = function (align) {
+//   // pub.CENTER  = .strokeAlignment = StrokeAlignment.CENTER_ALIGNMENT
+//   // pub.INSIDE  = .strokeAlignment = StrokeAlignment.INSIDE_ALIGNMENT
+//   // pub.OUTSIDE = .strokeAlignment = StrokeAlignment.OUTSIDE_ALIGNMENT
 
-  if (typeof align === 'string') {
-    currStrokeAlign = align;
-  } else {
-    error("b.strokeAlign, not supported type. Please make sure the strokeAlign is a string");
-  }
-};
+//   if (typeof align === 'string') {
+//     currStrokeAlign = align;
+//   } else {
+//     error("b.strokeAlign, not supported type. Please make sure the strokeAlign is a valid constant");
+//   }
+// };
 
 /**
  * Returns the object style with the given name. If the style does not exist it gets created.
