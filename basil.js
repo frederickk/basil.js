@@ -7,11 +7,11 @@
   
   License        - MIT
 
-  Developers     
+  Core     
                  - Ted Davis http://teddavis.org
                  - Benedikt Groß http://benedikt-gross.de
                  - Ludwig Zeller http://ludwigzeller.de
-  Contributers   
+  Members   
                  - Philipp Adrian http://www.philippadrian.com/
                  - be:screen GmbH http://bescreen.de
                  - Stefan Landsbek http://47nord.de
@@ -52,7 +52,7 @@
    * @property VERSION {String}
    * @cat Environment
    */
-  pub.VERSION = "1.07-experimental";  
+  pub.VERSION = "1.08";  
 
   #include "includes/constants.js";
   #include "includes/public-vars.js";
@@ -75,3 +75,4 @@
   init();
   
 })(this, app);
+

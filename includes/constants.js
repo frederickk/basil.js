@@ -1,4 +1,3 @@
-
 /**
  * Used with b.units() to set the coordinate system to points.
  * @property PT {String}
@@ -256,27 +255,11 @@ pub.BEFORE = LocationOptions.BEFORE;
 pub.AFTER = LocationOptions.AFTER;
 
 /**
-* Used with b.ui() to set dialog type
-* @property PALETTE {String}
-* @cat UI
-* @subcat dialogs
+* Used with b.go() to set Performance Mode. Disables ScreenRedraw during processing.
+* @property MODESILENT {String}
+* @cat Environment
+* @subcat modes
 */
-pub.PALETTE = "palette";
-
-/**
- * Used with b.ui() to set dialog type
- * @property PROMPT {String}
- * @cat UI
- * @subcat dialogs
- */
-pub.PROMPT = "dialog";
-
-/**
- * Used with b.go() to set Performance Mode. Disables ScreenRedraw during processing.
- * @property MODESILENT {String}
- * @cat Environment
- * @subcat modes
- */
 pub.MODESILENT = "ModeSilent";
 
 /**

@@ -11,7 +11,7 @@ var init = function() {
   currFillTint = 100;
   currCanvasMode = pub.PAGE;
   currColorMode = pub.RGB;
-};
+};    
 
 
 // ----------------------------------------
@@ -21,7 +21,7 @@ var init = function() {
  * Run the sketch! Has to be called in every sketch a the very end of the code.
  * You may add performance setting options when calling b.go():<br /><br />
  *
- * b.go(b.MODEVISIBLE) or alternatively: b.go()<br />
+ * b.go(b.MODEVISIBLE) or alternatively: b.go()<br />   
  * b.go(b.MODESILENT) <br />
  * b.go(b.MODEHIDDEN)<br /><br />
  *
@@ -32,16 +32,19 @@ var init = function() {
  */
 pub.go = function (mode) {
   if (!mode) {
-    mode = b.DEFAULTMODE;
+    mode = pub.DEFAULTMODE;
   }
-  app.scriptPreferences.enableRedraw = (mode == b.MODEVISIBLE);
+  app.scriptPreferences.enableRedraw = (mode == pub.MODEVISIBLE || mode == pub.MODEHIDDEN);
   app.preflightOptions.preflightOff = true;
 
-  try {
-    currentDoc(mode);
-    if (mode == b.MODEHIDDEN || mode == b.MODESILENT)
-      progressPanel = new Progress();
+  currentDoc(mode);
+  if (mode == pub.MODEHIDDEN || mode == pub.MODESILENT) {
+    progressPanel = new Progress();
+  }
+
+  if (typeof glob.setup === 'function') {
     runSetup();
+<<<<<<< HEAD
     runDrawOnce();
     var executionDuration = pub.millis();
     if (executionDuration < 1000) {
@@ -49,9 +52,19 @@ pub.go = function (mode) {
     } else {
       println("[Finished in " + (executionDuration/1000).toPrecision(3) + "s]");
     }
+=======
+  };
+>>>>>>> arc
 
-  } catch (e) { // exception not caught individually
-      alert(e); // make verbose
+  if (typeof glob.draw === 'function') {
+    runDrawOnce();
+  };
+  
+  var executionDuration = pub.millis();
+  if (executionDuration < 1000) {
+    println("[Finished in " + executionDuration + "ms]");
+  } else {
+    println("[Finished in " + (executionDuration/1000).toPrecision(3) + "s]");
   }
 
   if(currDoc && !currDoc.windows.length) {
@@ -127,7 +140,7 @@ var runSetup = function() {
     if (typeof glob.setup === 'function') {
       glob.setup();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.FAST_ENTIRE_SCRIPT);
+  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
 };
 
 var runDrawOnce = function() {
@@ -135,7 +148,7 @@ var runDrawOnce = function() {
     if (typeof glob.draw === 'function') {
       glob.draw();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.FAST_ENTIRE_SCRIPT);
+  }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
 };
 
 var runDrawLoop = function() {
@@ -143,23 +156,7 @@ var runDrawLoop = function() {
     if (typeof glob.draw === 'function') {
       glob.draw();
     }
-  }, ScriptLanguage.javascript, undef, UndoModes.fastEntireScript);
-};
-
-var runUpdateOnce = function() {
-  app.doScript(function() {
-    if (typeof glob.update === 'function') {
-      glob.update();
-    }
   }, ScriptLanguage.javascript, undef, UndoModes.ENTIRE_SCRIPT);
-};
-
-var runUpdateLoop = function() {
-  app.doScript(function() {
-    if (typeof glob.update === 'function') {
-      glob.update();
-    }
-  }, ScriptLanguage.javascript, undef, UndoModes.fastEntireScript);
 };
 
 var welcome = function() {
@@ -180,7 +177,8 @@ var currentDoc = function (mode) {
       doc = app.activeDocument;
       if (mode == b.MODEHIDDEN) {
         if (doc.modified) {
-          throw ("To run in MODEHIDDEN save your active doc before processing.");
+          doc.save();
+          warning("Document was unsaved and has now been saved to your hard drive in order to enter MODEHIDDEN.");
         }
         var docPath = doc.fullName;
         doc.close(); // Close the doc and reopen it without adding to the display list
@@ -210,7 +208,8 @@ var setCurrDoc = function(doc) {
   resetCurrDoc();
   currDoc = doc;
   // -- setup document --
-
+  
+  currDoc.pasteboardPreferences.pasteboardMargins = ["1000pt", "1000pt"];
   currDoc.viewPreferences.rulerOrigin = RulerOrigin.PAGE_ORIGIN;
   currFont = currDoc.textDefaults.appliedFont.name;
   currFontSize = currDoc.textDefaults.pointSize;
@@ -333,7 +332,7 @@ var updatePublicPageSizeVars = function () {
       heightOffset = b.doc().documentPreferences.documentBleedBottomOffset + b.doc().documentPreferences.documentBleedTopOffset;
       b.resetMatrix();
       b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
-
+      
       if(facingPages && currentPage().side === PageSideOptions.RIGHT_HAND){
         b.resetMatrix();
         b.translate( 0, -b.doc().documentPreferences.documentBleedTopOffset );
@@ -345,9 +344,9 @@ var updatePublicPageSizeVars = function () {
       widthOffset = 0;
       heightOffset = 0;
       b.resetMatrix();
-
+      
       var w = pageBounds[3] - pageBounds[1] + widthOffset;
-      var h = pageBounds[2] - pageBounds[0] + heightOffset;
+      var h = pageBounds[2] - pageBounds[0] + heightOffset;    
 
       pub.width = w * 2;
 
@@ -356,10 +355,10 @@ var updatePublicPageSizeVars = function () {
       } else if (currentPage().side === PageSideOptions.RIGHT_HAND){
         pub.translate(-w,0);
       }
-
-
+       
+      
       pub.height = h;
-      break;
+      break; 
 
     case pub.FACING_BLEEDS:
       widthOffset = b.doc().documentPreferences.documentBleedInsideOrLeftOffset + b.doc().documentPreferences.documentBleedOutsideOrRightOffset;
@@ -368,7 +367,7 @@ var updatePublicPageSizeVars = function () {
       b.translate( -b.doc().documentPreferences.documentBleedInsideOrLeftOffset, -b.doc().documentPreferences.documentBleedTopOffset );
 
       var w = pageBounds[3] - pageBounds[1] + widthOffset / 2;
-      var h = pageBounds[2] - pageBounds[0] + heightOffset;
+      var h = pageBounds[2] - pageBounds[0] + heightOffset;    
 
       pub.width = w * 2;
       pub.height = h;
@@ -386,7 +385,7 @@ var updatePublicPageSizeVars = function () {
       b.translate( currentPage().marginPreferences.left, currentPage().marginPreferences.top );
 
       var w = pageBounds[3] - pageBounds[1] - widthOffset / 2;
-      var h = pageBounds[2] - pageBounds[0] - heightOffset;
+      var h = pageBounds[2] - pageBounds[0] - heightOffset;    
 
       pub.width = w * 2;
       pub.height = h;
@@ -395,7 +394,7 @@ var updatePublicPageSizeVars = function () {
         pub.translate(-w-widthOffset/2,0);
       }
 
-      return; // early exit
+      return; // early exit    
 
     default:
       b.error("b.canvasMode(), basil.js canvasMode seems to be messed up, please use one of the following modes: b.PAGE, b.MARGIN, b.BLEED, b.FACING_PAGES, b.FACING_MARGINS, b.FACING_BLEEDS");
@@ -404,7 +403,7 @@ var updatePublicPageSizeVars = function () {
 
   if(singlePageMode){
     var w = pageBounds[3] - pageBounds[1] + widthOffset;
-    var h = pageBounds[2] - pageBounds[0] + heightOffset;
+    var h = pageBounds[2] - pageBounds[0] + heightOffset;    
 
     pub.width = w;
     pub.height = h;
@@ -417,7 +416,7 @@ var findInCollectionByName = function(collection, name) {
 /*  var found = collection.itemByName(name);
   if (!found || !found.isValid) return null;
   return found;*/
-
+  
    var found = null;
    for (var i = 0; i < collection.length; i++) {
      if (collection[i].name === name) return collection[i];
@@ -428,7 +427,7 @@ var findInCollectionByName = function(collection, name) {
 
 var error = pub.error = function(msg) {
   println(ERROR_PREFIX + msg);
-  throw new Error( ERROR_PREFIX + msg );
+  exit();
 };
 
 var warning = pub.warning = function(msg) {

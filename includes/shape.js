@@ -39,7 +39,8 @@ pub.ellipse = function(x, y, w, h){
     ellipseBounds[3] = x+(w);
   }
 
-  if(w === 0 || h === 0) return false;
+if(w === 0 || h === 0)
+  return false;
 
   var ovals = currentPage().ovals;
   var newOval = ovals.add( currentLayer() );
@@ -253,7 +254,6 @@ pub.arc = function(cx, cy, w, h, startAngle, endAngle, mode) {
   return pub.endShape();
 };
 
-
 /*
  * Cubic bezier approximation of a eliptical arc
  *
@@ -361,6 +361,7 @@ function addPolygon() {
   }
 };
 
+
 function notCalledBeginShapeError () {
   error("b.endShape(), you have to call first beginShape(), before calling vertex() and endShape()");
 };
@@ -423,6 +424,7 @@ pub.rect = function(x, y, w, h){
   }
   return newRect;
 };
+
 
 // -- Attributes --
 
@@ -514,6 +516,7 @@ pub.objectStyle = function(name) {
   }
   return style;
 };
+
 
 /**
  * Duplicates the given page after the current page or the given pageitem to the current page and layer. Use b.rectMode() to set center point.
