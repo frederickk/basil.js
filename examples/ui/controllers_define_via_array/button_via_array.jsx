@@ -21,7 +21,7 @@ var uiConfig = {
 
 function setup() {
 
-  dialog = new b.ui.palette( 'Button Example', uiConfig );
+  dialog = new b.ui.prompt( 'Button Example', uiConfig );
 
 };
 

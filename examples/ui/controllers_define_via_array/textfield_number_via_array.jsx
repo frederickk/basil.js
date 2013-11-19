@@ -33,7 +33,7 @@ var uiConfig = {
 
 function setup() {
 
-  dialog = new b.ui.palette( 'Textfield Number Example', uiConfig );
+  dialog = new b.ui.prompt( 'Textfield Number Example', uiConfig );
 
 };
 

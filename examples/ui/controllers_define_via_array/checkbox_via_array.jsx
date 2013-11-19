@@ -21,7 +21,7 @@ var uiConfig = {
 
 function setup() {
 
-  dialog = new b.ui.palette( 'Checkbox Example', uiConfig );
+  dialog = new b.ui.prompt( 'Checkbox Example', uiConfig );
 
 };
 

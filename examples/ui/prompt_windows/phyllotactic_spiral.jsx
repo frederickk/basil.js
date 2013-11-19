@@ -21,45 +21,98 @@
 // Properties
 //
 
+// create a variable for the interface control palette window
 var dialog;
+
+var uiConfig = {
+  spacing: {
+    type: 'slider',
+    label: 'Dot spacing',
+    value: 100,
+    valueLabel: true,
+    valueType: 'int',
+    range: [10, 250]
+  },
+
+  radius: {
+    type: 'textfield',
+    label: 'Dot Radius (-1 == auto)',
+    value: -1
+  },
+
+  separator: {
+    type: 'separator'
+  },
+
+  drawModus: {
+    type: 'dropdown',
+    label: 'Drawing Mode',
+    items: ['Circles', 'Lines'],
+    value: 'Circles'
+  },
+
+  separator: {
+    type: 'separator'
+  },
+
+  amount: {
+    type: 'slider',
+    label: 'Number of points',
+    value: 20,
+    valueLabel: true,
+    valueType: 'int',
+    range: [10, 100]
+  },
+
+  separator: {
+    type: 'separator'
+  },
+
+  bRandomColors: {
+    type: 'checkbox',
+    label: 'Randomize Color Swatch',
+    value: false
+  }
+
+};
 
 
 
 function setup() {
 
-  dialog = b.ui.palette( 'Phyllotactic Spiral' );
+  dialog = b.ui.prompt( 'Phyllotactic Spiral', uiConfig );
+  // dialog = b.ui.palette( 'Phyllotactic Spiral', uiConfig );
+  // dialog.add('slider', 'spacing', 100, {
+  //   label: 'Dot spacing',
+  //   valueLabel: true,
+  //   valueType: 'int',
+  //   range: [10, 250]
+  // });
+  // dialog.add('textfield', 'radius', -1, {
+  //   label: 'Dot Radius (-1 == auto)',
+  // });
 
-  dialog.add('slider', 'spacing', 100, {
-    label: 'Dot spacing',
-    valueLabel: true,
-    valueType: 'int',
-    range: [10, 250]
-  });
-  dialog.add('textfield', 'radius', -1, {
-    label: 'Dot Radius (-1 == auto)',
-  });
+  // dialog.add('separator');
 
-  dialog.add('separator');
+  // dialog.add('dropdown', 'drawModus', 'Circles', {
+  //   label: 'Drawing Mode',
+  //   items: ['Circles', 'Lines']
+  // });
 
-  dialog.add('dropdown', 'drawModus', 'Circles', {
-    label: 'Drawing Mode',
-    items: ['Circles', 'Lines']
-  });
+  // dialog.add('separator');
 
-  dialog.add('separator');
+  // dialog.add('slider', 'amount', 20, {
+  //   label: 'Number of points',
+  //   valueLabel: true,
+  //   valueType: 'int',
+  //   range: [10, 100]
+  // });
 
-  dialog.add('slider', 'amount', 20, {
-    label: 'Number of points',
-    valueLabel: true,
-    valueType: 'int',
-    range: [10, 100]
-  });
+  // dialog.add('separator');
 
-  dialog.add('separator');
-
-  dialog.add('checkbox', 'bRandomColors', false, {
-    label: 'Randomize Color Swatch'
-  });
+  // dialog.add('checkbox', 'bRandomColors', false, {
+  //   label: 'Randomize Color Swatch'
+  // });
 
   b.layer('generated');
   b.canvasMode(b.PAGE);
@@ -79,7 +132,7 @@ function draw() {
     b.stroke( 'Black' );
   }
 
-  // draw some spirals
+  // draw some spiral
   var spiral = new Phyllotactic(
     b.width/2,
     b.height/2,
@@ -134,16 +187,10 @@ function update() {
  *  @return {Group} Group of Phyllotactic dots
  */
 var Phyllotactic = function(cx, cy, amount, spacing, radius, mode) {
-  var amount = (amount != undefined)
-      ? amount
-      : 250,
-    spacing = (spacing != undefined)
-      ? spacing
-      : 10,
-    radius = (radius != undefined)
-      ? radius
-      : -1,
-    autoSize = (radius === -1) ? true : false;
+  var amount = amount || 250,
+      spacing = spacing || 10,
+      radius = radius || -1,
+      autoSize = (radius === -1) ? true : false;
 
   var dots = [],
       rotation = 137.51,
@@ -167,52 +214,8 @@ var Phyllotactic = function(cx, cy, amount, spacing, radius, mode) {
         cx + (spacing * Math.sqrt(i-1) * Math.cos( (i-1) * b.radians( rotation ) )),
         cy + (spacing * Math.sqrt(i-1) * Math.sin( (i-1) * b.radians( rotation ) ))
       );
-
-      // TODO: add stroke options to core
-      // http://forums.adobe.com/thread/470458
-      // http://jongware.mit.edu/idcs5/pc_ObjectStyle.html
-      //
-      /* END CAPS */
-      // dot.endCap = EndCap.BUTT_END_CAP;
       dot.endCap = EndCap.ROUND_END_CAP;
-      // dot.endCap = EndCap.PROJECTING_END_CAP;
-      //
-      /* END JOINS */
-      // dot.endJoin = EndJoin.MITER_END_JOIN;
       dot.endJoin = EndJoin.ROUND_END_JOIN;
-      // dot.endJoin = EndJoin.BEVEL_END_JOIN;
-      //
-      /* ARROW HEADS */
-      // dot.leftLineEnd = ArrowHead.NONE;
-      // dot.leftLineEnd = ArrowHead.SIMPLE_ARROW_HEAD;
-      // dot.leftLineEnd = ArrowHead.SIMPLE_WIDE_ARROW_HEAD;
-      // dot.leftLineEnd = ArrowHead.TRIANGLE_ARROW_HEAD;
-      // dot.leftLineEnd = ArrowHead.TRIANGLE_WIDE_ARROW_HEAD;
-      // dot.leftLineEnd = ArrowHead.BARBED_ARROW_HEAD;
-      // dot.leftLineEnd = ArrowHead.CURVED_ARROW_HEAD;
-      // dot.leftLineEnd = ArrowHead.CIRCLE_ARROW_HEAD;
-      // dot.leftLineEnd = ArrowHead.CIRCLE_SOLID_ARROW_HEAD;
-      // dot.leftLineEnd = ArrowHead.SQUARE_ARROW_HEAD;
-      // dot.leftLineEnd = ArrowHead.SQUARE_SOLID_ARROW_HEAD;
-      // dot.leftLineEnd = ArrowHead.BAR_ARROW_HEAD;
-      //
-      // dot.rightLineEnd = ArrowHead.NONE;
-      // dot.rightLineEnd = ArrowHead.SIMPLE_ARROW_HEAD;
-      // dot.rightLineEnd = ArrowHead.SIMPLE_WIDE_ARROW_HEAD;
-      // dot.rightLineEnd = ArrowHead.TRIANGLE_ARROW_HEAD;
-      // dot.rightLineEnd = ArrowHead.TRIANGLE_WIDE_ARROW_HEAD;
-      // dot.rightLineEnd = ArrowHead.BARBED_ARROW_HEAD;
-      // dot.rightLineEnd = ArrowHead.CURVED_ARROW_HEAD;
-      // dot.rightLineEnd = ArrowHead.CIRCLE_ARROW_HEAD;
-      // dot.rightLineEnd = ArrowHead.CIRCLE_SOLID_ARROW_HEAD;
-      // dot.rightLineEnd = ArrowHead.SQUARE_ARROW_HEAD;
-      // dot.rightLineEnd = ArrowHead.SQUARE_SOLID_ARROW_HEAD;
-      // dot.rightLineEnd = ArrowHead.BAR_ARROW_HEAD;
-      //
-      /* ALIGNMENT */
-      // dot.strokeAlignment = StrokeAlignment.CENTER_ALIGNMENT
-      // dot.strokeAlignment = StrokeAlignment.INSIDE_ALIGNMENT
-      // dot.strokeAlignment = StrokeAlignment.OUTSIDE_ALIGNMENT
     }
     else {
       dot = b.ellipse( x,y, radius,radius );
@@ -229,6 +232,7 @@ var getRandomSwatch = function(start) {
     b.doc().swatches.everyItem().name.unique()[ parseInt(b.random(start,b.doc().swatches.length)) ]
   );
 };
+
 
 
 b.go();

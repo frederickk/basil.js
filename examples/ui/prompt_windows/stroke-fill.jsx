@@ -35,7 +35,7 @@ var uiConfig = {
 
 function setup() {
 
-  dialog = new b.ui.dialog( b.PROMPT, 'Stroke-Fill', uiConfig );
+  dialog = b.ui.prompt( 'Stroke-Fill', uiConfig );
 
 };
 

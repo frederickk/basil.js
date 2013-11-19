@@ -30,7 +30,7 @@ var uiConfig = {
 
 function setup() {
 
-  dialog = new b.ui.palette( 'Textfield String Example', uiConfig );
+  dialog = new b.ui.prompt( 'Textfield String Example', uiConfig );
 
 };
 

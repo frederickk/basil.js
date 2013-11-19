@@ -22,7 +22,7 @@ var uiConfig = {
 
 function setup() {
 
-  dialog = new b.ui.palette( 'Dropdown Example', uiConfig );
+  dialog = new b.ui.prompt( 'Dropdown Example', uiConfig );
 
 };
 
