@@ -9,6 +9,7 @@
  *  - fix independent label bug
  *  - major bug with prompts, need to support .add()
  *  - fix redraw() 2x bug
+ *  - fix dropdown bug so it works with ints/floats
  *
  *  ROADMAP:
  *  / implement missing/additional controllers
@@ -353,6 +354,7 @@ pub.controllers = function() {
     // ensures that each controller has the core
     // set of properties
     return mergeArray({
+      controller: null,
       type:       null,
       name:       null,
       label:      (properties.label != undefined) ? properties.label + "\u00A0" : "\u00A0",
@@ -535,6 +537,7 @@ pub.controllers = function() {
     };
 
     properties["value"] = properties.value;
+    properties["controller"] = button;
     return properties;
   };
 
@@ -580,6 +583,7 @@ pub.controllers = function() {
     properties["value"] = (properties.valueType === "int")
       ? ((check.value) ? 1 : 0)
       : check.value;
+    properties["controller"] = check;
     return properties;
   };
 
@@ -735,6 +739,7 @@ pub.controllers = function() {
     };
 
     properties["value"] = updateValue(properties,text.text);
+    properties["controller"] = text;
     return properties;
   };
 
@@ -826,6 +831,7 @@ pub.controllers = function() {
     };
 
     properties["value"] = updateValue(properties,slider.value);
+    properties["controller"] = slider;
     return properties;
   };
 
@@ -881,6 +887,7 @@ pub.controllers = function() {
     };
 
     properties["value"] = updateValue(properties,dropdown.selection.text);
+    properties["controller"] = dropdown;
     return properties;
   };
 
@@ -913,6 +920,7 @@ pub.controllers = function() {
     separator.alignment = ["center","center"];
 
     properties["value"] = name;
+    properties["controller"] = separator;
     return properties;
   };
 
